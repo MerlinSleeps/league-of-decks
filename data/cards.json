@@ -1,0 +1,52 @@
+[
+  {
+    "id": "RBO-001",
+    "name": "Annie",
+    "type": "Champion",
+    "cost": 3,
+    "faction": "Noxus",
+    "text": "Play: Deal 2 damage to an enemy. When I attack, deal 1 damage to my blocker.",
+    "might": 2,
+    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Annie"
+  },
+  {
+    "id": "RBO-002",
+    "name": "Tibbers",
+    "type": "Follower",
+    "cost": 6,
+    "faction": "Noxus",
+    "text": "Overwhelm. Play: Stun an enemy.",
+    "might": 5,
+    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Tibbers"
+  },
+  {
+    "id": "RBO-003",
+    "name": "Fireball",
+    "type": "Spell",
+    "cost": 1,
+    "faction": "Noxus",
+    "text": "Deal 2 damage to any target.",
+    "might": null,
+    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Fireball"
+  },
+  {
+    "id": "RBO-004",
+    "name": "Garen",
+    "type": "Champion",
+    "cost": 5,
+    "faction": "Demacia",
+    "text": "Regeneration. I can block any number of attackers.",
+    "might": 5,
+    "imageUrl": "https://placehold.co/300x420/1e96fc/ffffff?text=Garen"
+  },
+  {
+    "id": "RBO-005",
+    "name": "For Demacia!",
+    "type": "Spell",
+    "cost": 3,
+    "faction": "Demacia",
+    "text": "Give all allies +1/+1 this round.",
+    "might": null,
+    "imageUrl": "https://placehold.co/300x420/1e96fc/ffffff?text=Spell"
+  }
+]
