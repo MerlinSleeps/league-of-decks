@@ -1,13 +1,10 @@
-// src/components/builder/DeckList.tsx
-
 "use client";
 
-import { useState } from 'react'; // 👈 1. Import useState
+import { useState } from 'react';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { useAuth } from '@/context/AuthContext';
 import { auth as clientAuth } from '@/lib/firebase';
 
-// Import shadcn components
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { X } from 'lucide-react';
@@ -28,7 +25,7 @@ export default function DeckList() {
   const { deck, removeCard } = useDeckBuilder();
   const { user } = useAuth();
   const [deckName, setDeckName] = useState('');
-  const [sortBy, setSortBy] = useState<'cost' | 'name'>('cost'); // 👈 2. Add sort state
+  const [sortBy, setSortBy] = useState<'cost' | 'name'>('cost');
 
   const totalCards = deck.reduce((sum, entry) => sum + entry.count, 0);
 
@@ -63,7 +60,6 @@ export default function DeckList() {
       </div>
       <Separator className="bg-gray-700 mb-4" />
 
-      {/* 👈 3. ADD SORT BUTTONS */}
       <div className="flex gap-2 mb-4">
         <Button
           variant={sortBy === 'cost' ? 'secondary' : 'ghost'}
@@ -80,25 +76,21 @@ export default function DeckList() {
           Sort by Name
         </Button>
       </div>
-      {/* -------------------- */}
 
       <div className="flex flex-col gap-2 max-h-96 overflow-y-auto pr-2">
         {deck.length === 0 && (
           <p className="text-gray-400">Add cards from the gallery...</p>
         )}
 
-        {/* 👈 4. UPDATE SORT LOGIC */}
         {[...deck]
           .sort((a, b) => {
             if (sortBy === 'cost') {
-              // Sort by cost, then by name (this is the logic I omitted)
               return (
                 a.card.cost - b.card.cost ||
                 a.card.name.localeCompare(b.card.name)
               );
             }
             if (sortBy === 'name') {
-              // Sort purely by name
               return a.card.name.localeCompare(b.card.name);
             }
             return 0;
@@ -125,7 +117,6 @@ export default function DeckList() {
           ))}
       </div>
 
-      {/* ... (AlertDialog for saving the deck remains the same) ... */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button className="w-full mt-6" disabled={deck.length === 0 || !user}>

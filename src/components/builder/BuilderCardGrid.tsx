@@ -1,12 +1,9 @@
-// src/components/builder/BuilderCardGrid.tsx
-
 "use client";
 
 import { useState, useMemo } from 'react';
 import type { Card } from '@/types/card';
-import { useDeckBuilder } from '@/context/DeckBuilderContext'; // 👈 1. Import
+import { useDeckBuilder } from '@/context/DeckBuilderContext';
 
-// Import shadcn components
 import {
   Card as ShadCard,
   CardContent,
@@ -14,14 +11,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button'; // 👈 2. Import Button
+import { Button } from '@/components/ui/button';
 
 interface CardGridProps {
   allCards: Card[];
 }
 
 export default function BuilderCardGrid({ allCards }: CardGridProps) {
-  const { addCard } = useDeckBuilder(); // 👈 3. Get the addCard function
+  const { addCard } = useDeckBuilder();
   const [searchText, setSearchText] = useState('');
 
   const filteredCards = useMemo(() => {
@@ -55,7 +52,6 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
                 alt={card.name}
                 className="w-full rounded-md mb-2 aspect-[3/4] object-cover"
               />
-              {/* 4. Add the button! */}
               <Button
                 className="w-full"
                 variant="outline"

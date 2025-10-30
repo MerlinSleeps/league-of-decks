@@ -1,11 +1,8 @@
-// src/lib/firebase.ts
-
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// We use process.env to pull in the keys from your .env.local file
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -16,12 +13,8 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-// We add a check to see if the app is already initialized
-// This is important for Next.js's "hot reload" feature in development
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Export the services you'll need
 const auth = getAuth(app);
 const db = getFirestore(app);
 

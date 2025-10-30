@@ -1,5 +1,3 @@
-// src/components/auth/LoginModal.tsx
-
 "use client";
 
 import { useState } from 'react';
@@ -9,7 +7,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-// Import shadcn components
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -23,7 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-// This component will receive the "Log In" button as a 'children' prop
+
 export function LoginModal({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -36,7 +34,7 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
       await signInWithEmailAndPassword(auth, email, password);
       // On success, Firebase's onAuthStateChanged (in our AuthContext)
       // will update the user state.
-      setIsOpen(false); // Close the modal
+      setIsOpen(false);
     } catch (err: any) {
       setError(err.message);
     }
@@ -47,14 +45,13 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       // On success, the user is automatically logged in
-      setIsOpen(false); // Close the modal
+      setIsOpen(false);
     } catch (err: any) {
       setError(err.message);
     }
   };
 
   return (
-    // Control the open/closed state of the dialog
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -89,7 +86,6 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
               className="col-span-3"
             />
           </div>
-          {/* Show an error message if one exists */}
           {error && (
             <p className="col-span-4 text-center text-sm text-red-500">
               {error}

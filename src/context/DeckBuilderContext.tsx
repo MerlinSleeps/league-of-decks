@@ -1,5 +1,3 @@
-// src/context/DeckBuilderContext.tsx
-
 "use client";
 
 import type { Card } from '@/types/card';
@@ -16,7 +14,6 @@ interface DeckBuilderContextType {
   deck: DeckEntry[];
   addCard: (card: Card) => void;
   removeCard: (cardId: string) => void;
-  // We'll add saveDeck() here later
 }
 
 // Create the context

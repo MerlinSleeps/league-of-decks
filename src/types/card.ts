@@ -1,10 +1,10 @@
 export interface Card {
   id: string;
   name: string;
-  type: "Champion" | "Follower" | "Spell"; // Use a union for specific types
+  type: "Champion" | "Follower" | "Spell";
   cost: number;
-  faction: "Noxus" | "Demacia"; // Add other factions as you find them
+  faction: "Noxus" | "Demacia";
   text: string;
-  might: number | null; // Spells have null might
+  might: number | null;
   imageUrl: string;
 }

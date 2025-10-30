@@ -1,10 +1,8 @@
-// src/app/my-decks/page.tsx
-
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { db } from '@/lib/firebase'; // 👈 Client-side Firestore!
+import { db } from '@/lib/firebase';
 import {
   collection,
   getDocs,
@@ -14,7 +12,6 @@ import {
 } from 'firebase/firestore';
 import Link from 'next/link';
 
-// Import shadcn Card components
 import {
   Card,
   CardContent,
@@ -23,7 +20,6 @@ import {
 } from '@/components/ui/card';
 import { DeckEntry } from '@/context/DeckBuilderContext';
 
-// Define the shape of a saved deck
 interface SavedDeck {
   id: string;
   name: string;
@@ -37,18 +33,15 @@ export default function MyDecksPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // This function fetches the decks
     async function fetchDecks() {
       if (!user) {
         setIsLoading(false);
-        return; // No user, so no decks to fetch
+        return;
       }
 
       try {
-        // Get a reference to the user's 'decks' subcollection
         const decksColRef = collection(db, 'users', user.uid, 'decks');
 
-        // Create a query to order them by creation date
         const q = query(decksColRef, orderBy('createdAt', 'desc'));
 
         const querySnapshot = await getDocs(q);
@@ -67,7 +60,7 @@ export default function MyDecksPage() {
     }
 
     fetchDecks();
-  }, [user]); // 👈 Re-run this effect when the user object changes
+  }, [user]);
 
   if (isLoading) {
     return (
@@ -96,7 +89,6 @@ export default function MyDecksPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {decks.map((deck) => (
-            // 👈 2. ADD THE LINK
             <Link href={`/my-decks/${deck.id}`} key={deck.id}>
               <Card className="hover:shadow-lg hover:shadow-cyan-500/30 h-full">
                 <CardHeader>

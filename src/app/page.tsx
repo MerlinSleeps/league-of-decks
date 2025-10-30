@@ -1,5 +1,3 @@
-// src/app/page.tsx
-
 export default function HomePage() {
   return (
     <main className="container mx-auto p-4">

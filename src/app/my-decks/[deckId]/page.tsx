@@ -6,7 +6,6 @@ import { db } from '@/lib/firebase';
 import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { DeckEntry } from '@/context/DeckBuilderContext';
 
-// Define the shape of a saved deck
 interface SavedDeck {
   id: string;
   name: string;
@@ -14,7 +13,6 @@ interface SavedDeck {
   cards: DeckEntry[];
 }
 
-// This interface defines the 'params' prop
 interface DeckDetailPageProps {
 params: Promise<{ 
     deckId: string 
@@ -31,11 +29,10 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
     async function fetchDeck() {
       if (!user) {
         setIsLoading(false);
-        return; // No user, can't fetch deck
+        return;
       }
 
       try {
-        // Get a reference to the specific deck document
         const docRef = doc(db, 'users', user.uid, 'decks', deckId);
         const docSnap = await getDoc(docRef);
 
@@ -70,7 +67,6 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
       <h1 className="text-3xl font-bold mb-2">{deck.name}</h1>
       <p className="text-lg text-gray-400 mb-6">Total cards: {totalCards}</p>
 
-      {/* We'll just list the cards for now */}
       <div className="max-w-md bg-gray-900 p-4 rounded-lg border border-gray-700">
         {[...deck.cards]
           .sort((a, b) => a.card.cost - b.card.cost || a.card.name.localeCompare(b.card.name))

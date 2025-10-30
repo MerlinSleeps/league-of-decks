@@ -1,5 +1,3 @@
-// src/components/site/Header.tsx
-
 "use client";
 
 import Link from 'next/link';
@@ -21,16 +19,13 @@ export default function Header() {
   };
 
   return (
-    // This <header> is the main flex container
     <header className="container mx-auto p-4 flex justify-between items-center border-b border-gray-700">
       
-      {/* 1. This new <div> groups the Logo and Nav Links together on the LEFT */}
       <div className="flex items-center gap-6">
         <Link href="/" className="text-2xl font-bold text-white">
           League of Decks
         </Link>
 
-        {/* 2. This <nav> holds your new links */}
         <nav className="flex gap-4">
           <Link href="/cards" className="text-gray-300 hover:text-white">
             Gallery
@@ -44,7 +39,6 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* 3. This <nav> (which you already had) stays on the RIGHT */}
       <nav>
         {user ? (
           // User is logged in

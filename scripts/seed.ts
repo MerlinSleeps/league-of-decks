@@ -1,16 +1,10 @@
-// scripts/seed.ts
-
-// USE 'require' for JavaScript packages
 const admin = require('firebase-admin');
 
-// USE 'require' for JSON files
 const serviceAccount = require('../serviceAccountKey.json'); 
 const cardData = require('../data/cards.json');
 
-// KEEP 'import type' for TypeScript types
 import type { Card } from '../src/types/card'; 
 
-// Check if the app is already initialized
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -40,5 +34,4 @@ async function seedDatabase() {
   console.log('Database seeding finished!');
 }
 
-// Run the function
 seedDatabase();
