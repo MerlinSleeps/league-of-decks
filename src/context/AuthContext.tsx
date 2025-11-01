@@ -1,8 +1,8 @@
-"use client"; // This is a client-side utility
+"use client";
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase'; // Our client-side auth instance
+import { auth } from '@/lib/firebase';
 import React from 'react';
 
 // Define the shape of our context
@@ -11,10 +11,8 @@ interface AuthContextType {
   isLoading: boolean; // True while we're checking for a user
 }
 
-// Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Create the "Provider" component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
