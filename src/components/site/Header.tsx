@@ -23,7 +23,7 @@ export default function Header() {
       
       <div className="flex items-center gap-6">
         <Link href="/" className="text-2xl font-bold text-white">
-          League of Decks
+          Runic Library
         </Link>
 
         <nav className="flex gap-4">
