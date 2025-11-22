@@ -1,52 +1,477 @@
 [
-  {
-    "id": "RBO-001",
-    "name": "Annie",
-    "type": "Champion",
-    "cost": 3,
-    "faction": "Noxus",
-    "text": "Play: Deal 2 damage to an enemy. When I attack, deal 1 damage to my blocker.",
-    "might": 2,
-    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Annie"
-  },
-  {
-    "id": "RBO-002",
-    "name": "Tibbers",
-    "type": "Follower",
-    "cost": 6,
-    "faction": "Noxus",
-    "text": "Overwhelm. Play: Stun an enemy.",
-    "might": 5,
-    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Tibbers"
-  },
-  {
-    "id": "RBO-003",
-    "name": "Fireball",
-    "type": "Spell",
-    "cost": 1,
-    "faction": "Noxus",
-    "text": "Deal 2 damage to any target.",
-    "might": null,
-    "imageUrl": "https://placehold.co/300x420/d62828/ffffff?text=Fireball"
-  },
-  {
-    "id": "RBO-004",
-    "name": "Garen",
-    "type": "Champion",
-    "cost": 5,
-    "faction": "Demacia",
-    "text": "Regeneration. I can block any number of attackers.",
-    "might": 5,
-    "imageUrl": "https://placehold.co/300x420/1e96fc/ffffff?text=Garen"
-  },
-  {
-    "id": "RBO-005",
-    "name": "For Demacia!",
-    "type": "Spell",
-    "cost": 3,
-    "faction": "Demacia",
-    "text": "Give all allies +1/+1 this round.",
-    "might": null,
-    "imageUrl": "https://placehold.co/300x420/1e96fc/ffffff?text=Spell"
-  }
+    {
+      "id": "RBO-001",
+      "collectorNumber": 1,
+      "set": "Origins",
+      "name": "The Boss",
+      "description": "If a buffed unit you control would die, you may pay [C],\nexhaust me, and spend its buff to heal it, exhaust it, and\nrecall it instead. (Send it to base. This isn't a move.)\nWhen you conquer, ready me.",
+      "type": "Champion Legend",
+      "rarity": "epic",
+      "faction": "body order",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/222/fff?text=Sett,+The+Boss",
+        "fullURL": "https://placehold.co/300x420/222/fff?text=Sett,+The+Boss",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": ["Sett"]
+    },
+    {
+      "id": "RBO-002",
+      "collectorNumber": 2,
+      "set": "Origins",
+      "name": "Sett, Brawler",
+      "description": "When I'm played and when I conquer, buff me. (If I don't have a buff, I get a +1 might buff.)\nSpend my buff: Give me +4 might this turn.",
+      "type": "Champion Unit",
+      "rarity": "epic",
+      "faction": "body",
+      "stats": { "energy": 5, "might": 4, "cost": 0, "power": 1 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/444/fff?text=Sett,+Brawler",
+        "fullURL": "https://placehold.co/300x420/444/fff?text=Sett,+Brawler",
+        "artist": ""
+      },
+      "flavorText": "Momma always said I had her temper.",
+      "tags": ["Sett"]
+    },
+    {
+      "id": "RBO-003",
+      "collectorNumber": 3,
+      "set": "Origins",
+      "name": "Showstopper",
+      "description": "Buff a friendly unit in your base, then move it to a battlefield.\n(If it doesn't have a buff, it gets a +1 might buff.)",
+      "type": "Spell",
+      "rarity": "epic",
+      "faction": "body order",
+      "stats": { "energy": 1, "might": 0, "cost": 0, "power": 1 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/551/fff?text=Showstopper",
+        "fullURL": "https://placehold.co/300x420/551/fff?text=Showstopper",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": ["Signature", "Sett"]
+    },
+    {
+      "id": "RBO-004",
+      "collectorNumber": 4,
+      "set": "Origins",
+      "name": "Sabotage",
+      "description": "Choose an opponent. They reveal their hand. Choose a non-unit card from it, and recycle that card.",
+      "type": "Spell",
+      "rarity": "rare",
+      "faction": "body",
+      "stats": { "energy": 1, "might": 0, "cost": 0, "power": 1 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/662/fff?text=Sabotage",
+        "fullURL": "https://placehold.co/300x420/662/fff?text=Sabotage",
+        "artist": ""
+      },
+      "flavorText": "Sometimes it takes dirty tricks to ensure a fair fight.",
+      "tags": []
+    },
+    {
+      "id": "RBO-005",
+      "collectorNumber": 5,
+      "set": "Origins",
+      "name": "Pit Rookie",
+      "description": "",
+      "type": "Unit",
+      "rarity": "common",
+      "faction": "body",
+      "stats": { "energy": 2, "might": 2, "cost": 0, "power": 0 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/773/fff?text=Pit+Rookie",
+        "fullURL": "https://placehold.co/300x420/773/fff?text=Pit+Rookie",
+        "artist": ""
+      },
+      "flavorText": "Is that all you got?",
+      "tags": ["Bilgewater"]
+    },
+    {
+      "id": "RBO-006",
+      "collectorNumber": 6,
+      "set": "Origins",
+      "name": "Cithria of Cloudfield",
+      "description": "When you play another unit, buff me. (If I don't have a buff, I get a +1 might buff.)",
+      "type": "Unit",
+      "rarity": "common",
+      "faction": "body",
+      "stats": { "energy": 2, "might": 1, "cost": 0, "power": 0 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/884/fff?text=Cithria+of+Cloudfield",
+        "fullURL": "https://placehold.co/300x420/884/fff?text=Cithria+of+Cloudfield",
+        "artist": ""
+      },
+      "flavorText": "Every story starts small.",
+      "tags": ["Demacia", "Elite"]
+    },
+    {
+      "id": "RBO-007",
+      "collectorNumber": 7,
+      "set": "Origins",
+      "name": "Hidden Blade",
+      "description": "HIDDEN\nACTION\nKill a unit at a battlefield. Its controller draws 2.",
+      "type": "Spell",
+      "rarity": "common",
+      "faction": "order",
+      "stats": { "energy": 2, "might": 0, "cost": 0, "power": 1 },
+      "keywords": ["HIDDEN", "ACTION"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/995/fff?text=Hidden+Blade",
+        "fullURL": "https://placehold.co/300x420/995/fff?text=Hidden+Blade",
+        "artist": ""
+      },
+      "flavorText": "Not every Noxian decree is read aloud.",
+      "tags": []
+    },
+    {
+      "id": "RBO-008",
+      "collectorNumber": 8,
+      "set": "Origins",
+      "name": "Soaring Scout",
+      "description": "DEATHKNELL - Channel 1 rune exhausted",
+      "type": "Unit",
+      "rarity": "common",
+      "faction": "order",
+      "stats": { "energy": 2, "might": 1, "cost": 0, "power": 0 },
+      "keywords": ["DEATHKNELL"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/229/fff?text=Soaring+Scout",
+        "fullURL": "https://placehold.co/300x420/229/fff?text=Soaring+Scout",
+        "artist": "Show us a path! -Ashe"
+      },
+      "flavorText": "Show us a path! -Ashe",
+      "tags": ["Freljord", "Bird"]
+    },
+    {
+      "id": "RBO-009",
+      "collectorNumber": 9,
+      "set": "Origins",
+      "name": "Wallop",
+      "description": "ACTION\nAs you play this, you may spend a buff as an additional cost. If you do, ignore this spell's cost.\nReady a unit.",
+      "type": "Spell",
+      "rarity": "uncommon",
+      "faction": "body",
+      "stats": { "energy": 2, "might": 0, "cost": 0, "power": 0 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/339/fff?text=Wallop",
+        "fullURL": "https://placehold.co/300x420/339/fff?text=Wallop",
+        "artist": ""
+      },
+      "flavorText": "If smashing doesn't work, just keep smashing.",
+      "tags": []
+    },
+    {
+      "id": "RBO-010",
+      "collectorNumber": 10,
+      "set": "Origins",
+      "name": "Challenge",
+      "description": "ACTION\nChoose a friendly unit and an enemy unit. They deal damage equal to their Mights to each other.",
+      "type": "Spell",
+      "rarity": "common",
+      "faction": "body",
+      "stats": { "energy": 2, "might": 0, "cost": 0, "power": 1 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/449/fff?text=Challenge",
+        "fullURL": "https://placehold.co/300x420/449/fff?text=Challenge",
+        "artist": ""
+      },
+      "flavorText": "He started it when he hit me back!",
+      "tags": []
+    },
+    {
+      "id": "RBO-011",
+      "collectorNumber": 11,
+      "set": "Origins",
+      "name": "First Mate",
+      "description": "When you play me, ready another unit.",
+      "type": "Unit",
+      "rarity": "common",
+      "faction": "body",
+      "stats": { "energy": 3, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/559/fff?text=First+Mate",
+        "fullURL": "https://placehold.co/300x420/559/fff?text=First+Mate",
+        "artist": ""
+      },
+      "flavorText": "it's a boarding party! Try to have some fun with it.",
+      "tags": ["Bilgewater", "Pirate"]
+    },
+    {
+      "id": "RBO-012",
+      "collectorNumber": 12,
+      "set": "Origins",
+      "name": "Call to Glory",
+      "description": "REACTION\nAs you play this, you may spend a buff as an additional cost. If you do, ignore this spell's cost.\nGive a unit +3 might this turn.",
+      "type": "Spell",
+      "rarity": "common",
+      "faction": "order",
+      "stats": { "energy": 3, "might": 0, "cost": 0, "power": 0 },
+      "keywords": ["buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/669/fff?text=Call+to+Glory",
+        "fullURL": "https://placehold.co/300x420/669/fff?text=Call+to+Glory",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+    {
+      "id": "RBO-013",
+      "collectorNumber": 13,
+      "set": "Origins",
+      "name": "Primal Strength",
+      "description": "ACTION\nGive a unit +7 might this turn.",
+      "type": "Spell",
+      "rarity": "rare",
+      "faction": "body",
+      "stats": { "energy": 4, "might": 0, "cost": 0, "power": 1 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/779/fff?text=Primal+Strength",
+        "fullURL": "https://placehold.co/300x420/779/fff?text=Primal+Strength",
+        "artist": ""
+      },
+      "flavorText": "There is savagery inside us all.",
+      "tags": []
+    },
+    {
+      "id": "RBO-014",
+      "collectorNumber": 14,
+      "set": "Origins",
+      "name": "Qiyana, Victorious",
+      "description": "DEFLECT\nWhen I conquer, draw 1 or channel 1 rune exhausted.",
+      "type": "Champion Unit",
+      "rarity": "rare",
+      "faction": "body",
+      "stats": { "energy": 4, "might": 1, "cost": 0, "power": 4 },
+      "keywords": ["conquer", "draw", "channel"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/889/fff?text=Qiyana,+Victorious",
+        "fullURL": "https://placehold.co/300x420/889/fff?text=Qiyana,+Victorious",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": ["Qiyana", "Ixtal"]
+    },
+    {
+      "id": "RBO-015",
+      "collectorNumber": 15,
+      "set": "Origins",
+      "name": "Fiora, Victorious",
+      "description": "While I'm MIGHTY, I have DEFLECT, GANKING and SHIELD",
+      "type": "Champion Unit",
+      "rarity": "rare",
+      "faction": "order",
+      "stats": { "energy": 4, "might": 4, "cost": 0, "power": 1 },
+      "keywords": ["MIGHTY", "DEFLECT", "GANKING", "SHIELD"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/999/fff?text=Fiora,+Victorious",
+        "fullURL": "https://placehold.co/300x420/999/fff?text=Fiora,+Victorious",
+        "artist": ""
+      },
+      "flavorText": "I long for a worthy opponent.",
+      "tags": ["Fiora", "Demacia"]
+    },
+    {
+      "id": "RBO-016",
+      "collectorNumber": 16,
+      "set": "Origins",
+      "name": "Karma, Channeler",
+      "description": "VISION\nWhen you recycle one or more cards to your Main Deck, buff a friendly unit.",
+      "type": "Champion Unit",
+      "rarity": "epic",
+      "faction": "order",
+      "stats": { "energy": 6, "might": 6, "cost": 0, "power": 1 },
+      "keywords": ["VISION", "buff"],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/aaa/fff?text=Karma,+Channeler",
+        "fullURL": "https://placehold.co/300x420/aaa/fff?text=Karma,+Channeler",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": ["Karma", "Ionia"]
+    },
+    {
+      "id": "RBO-017",
+      "collectorNumber": 17,
+      "set": "Origins",
+      "name": "Grove of the God-Willow",
+      "description": "",
+      "type": "Battlefield",
+      "rarity": "rare",
+      "faction": "order",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/bbb/fff?text=Grove+of+the+God-Willow",
+        "fullURL": "https://placehold.co/300x420/bbb/fff?text=Grove+of+the+God-Willow",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+    {
+      "id": "RBO-018",
+      "collectorNumber": 18,
+      "set": "Origins",
+      "name": "Windswept Hillock",
+      "description": "",
+      "type": "Battlefield",
+      "rarity": "rare",
+      "faction": "order",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/ccc/fff?text=Windswept+Hillock",
+        "fullURL": "https://placehold.co/300x420/ccc/fff?text=Windswept+Hillock",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+    {
+      "id": "RBO-019",
+      "collectorNumber": 19,
+      "set": "Origins",
+      "name": "Monastery of Hirana",
+      "description": "",
+      "type": "Battlefield",
+      "rarity": "rare",
+      "faction": "order",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/ddd/fff?text=Monastery+of+Hirana",
+        "fullURL": "https://placehold.co/300x420/ddd/fff?text=Monastery+of+Hirana",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+    {
+      "id": "RBO-020",
+      "collectorNumber": 20,
+      "set": "Origins",
+      "name": "Order Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "order",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/eee/fff?text=Order+Rune",
+        "fullURL": "https://placehold.co/300x420/eee/fff?text=Order+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+    {
+      "id": "RBO-021",
+      "collectorNumber": 21,
+      "set": "Origins",
+      "name": "Body Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "body",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/fff/000?text=Body+Rune",
+        "fullURL": "https://placehold.co/300x420/fff/000?text=Body+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+        {
+      "id": "RBO-021",
+      "collectorNumber": 22,
+      "set": "Origins",
+      "name": "Fury Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "fury",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/fff/000?text=Fury+Rune",
+        "fullURL": "https://placehold.co/300x420/fff/000?text=Fury+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+        {
+      "id": "RBO-021",
+      "collectorNumber": 21,
+      "set": "Origins",
+      "name": "Calm Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "calm",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/fff/000?text=Calm+Rune",
+        "fullURL": "https://placehold.co/300x420/fff/000?text=Calm+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+        {
+      "id": "RBO-021",
+      "collectorNumber": 21,
+      "set": "Origins",
+      "name": "Chaos Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "chaos",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/fff/000?text=Chaos+Rune",
+        "fullURL": "https://placehold.co/300x420/fff/000?text=Chaos+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    },
+        {
+      "id": "RBO-021",
+      "collectorNumber": 21,
+      "set": "Origins",
+      "name": "Mind Rune",
+      "description": "",
+      "type": "Rune",
+      "rarity": "common",
+      "faction": "mind",
+      "stats": { "energy": 0, "might": 0, "cost": 0, "power": 0 },
+      "keywords": [],
+      "art": {
+        "thumbnailURL": "https://placehold.co/100x140/fff/000?text=Mind+Rune",
+        "fullURL": "https://placehold.co/300x420/fff/000?text=Mind+Rune",
+        "artist": ""
+      },
+      "flavorText": "",
+      "tags": []
+    }
 ]
