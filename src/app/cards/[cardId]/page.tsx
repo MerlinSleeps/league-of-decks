@@ -68,7 +68,6 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
               className="w-full rounded-md mb-4"
             />
             <p className="text-lg mb-2">{card.description}</p>
-            <p className="text-xl font-bold">Cost: {card.stats.cost}</p>
             <p className="text-xl font-bold">Power: {card.stats.power}</p>
             <p className="text-xl font-bold">Energy: {card.stats.energy}</p>
             <p className="text-xl font-bold">Might: {card.stats.might}</p>

@@ -52,7 +52,6 @@ export default function CardGrid({ allCards }: CardGridProps) {
                   <Image
                     src={card.art.thumbnailURL}
                     alt={card.name}
-                    fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
                     className="object-cover rounded-md"
                   />
@@ -61,7 +60,6 @@ export default function CardGrid({ allCards }: CardGridProps) {
               </CardContent>
               <CardFooter>
                 <div className="w-full">
-                  <p className="text-lg font-bold">Cost: {card.stats.cost}</p>
                   <p className="text-lg font-bold">Power: {card.stats.power}</p>
                   <p className="text-lg font-bold">Energy: {card.stats.energy}</p>
                   <p className="text-lg font-bold">Might: {card.stats.might}</p>
