@@ -1,27 +1,49 @@
 import * as admin from 'firebase-admin';
-import serviceAccount from '../../serviceAccountKey.json'; // Import your local key
 
-// Helper to initialize
-function initAdmin() {
-  // Check if already initialized to prevent "duplicate app" errors
-  if (!admin.apps.length) {
-
-    // Safety check: ensure the JSON file was imported correctly
-    if (!serviceAccount) {
-      throw new Error('serviceAccountKey.json is missing or empty');
-    }
-
-    admin.initializeApp({
-      // We cast it to ServiceAccount to satisfy TypeScript
-      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-    });
-
-    console.log('✅ Firebase Admin SDK initialized with JSON file.');
-  }
+interface FirebaseAdminConfig {
+  projectId: string;
+  clientEmail: string;
+  privateKey: string;
 }
 
-// ⭐️ Export the function
+function formatPrivateKey(key: string) {
+  return key.replace(/\\n/g, '\n');
+}
+
+export function createFirebaseAdminApp(config: FirebaseAdminConfig) {
+  if (admin.apps.length > 0) {
+    return admin.app();
+  }
+
+  return admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: config.projectId,
+      clientEmail: config.clientEmail,
+      privateKey: formatPrivateKey(config.privateKey),
+    }),
+  });
+}
+
 export function getFirestore() {
-  initAdmin(); // Initialize only when called
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+
+  if (!privateKey || !clientEmail || !projectId) {
+    throw new Error(
+      'Missing Firebase Admin keys. Check .env.local (local) or Vercel Env Vars (production).'
+    );
+  }
+
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey: privateKey.replace(/\\n/g, '\n'),
+      }),
+    });
+  }
+
   return admin.firestore();
 }
