@@ -6,8 +6,6 @@ const admin = require('firebase-admin');
 const serviceAccount = require('../serviceAccountKey.json');
 const cardData = require('../data/cards.json');
 
-import type { Card } from '../src/types/card';
-
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
