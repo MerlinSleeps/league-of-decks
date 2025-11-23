@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/types/card';
+import { CardImage } from '@/components/ui/CardImage';
 
 import {
   Card as ShadCard,
@@ -48,14 +49,13 @@ export default function CardGrid({ allCards }: CardGridProps) {
                 <CardTitle className="text-lg">{card.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="aspect-[3/4] w-full bg-gray-700 rounded-md mb-2 relative">
-                  <Image
-                    src={card.art.thumbnailURL}
-                    alt={card.name}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
-                    className="object-cover rounded-md"
-                  />
-                </div>
+
+                <CardImage
+                  src={card.art?.thumbnailURL}
+                  alt={card.name}
+                  className="w-full rounded-md mb-2 aspect-[3/4]"
+                />
+
                 <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
               <CardFooter>
