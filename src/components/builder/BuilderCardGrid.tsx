@@ -1,9 +1,9 @@
 "use client";
 
-import Image from 'next/image';
 import { useState, useMemo } from 'react';
 import type { Card } from '@/types/card';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
+import { CardImage } from '@/components/ui/CardImage';
 
 import {
   Card as ShadCard,
@@ -48,13 +48,14 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
               <CardTitle className="text-lg">{card.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Image
-                src={card.art.thumbnailURL}
+
+              <CardImage
+                src={card.art?.thumbnailURL}
                 alt={card.name}
-                width={300}
-                height={400}
-                className="w-full rounded-md mb-2 aspect-[3/4] object-cover"
+                className="w-full rounded-md mb-2 aspect-[3/4]"
               />
+
+              <p className="text-sm text-gray-400">{card.description}</p>
               <Button
                 className="w-full"
                 variant="outline"
@@ -66,6 +67,6 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
           </ShadCard>
         ))}
       </div>
-    </div>
+    </div >
   );
 }
