@@ -59,7 +59,6 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
     return <main className="container mx-auto p-4"><p>Deck not found.</p></main>;
   }
 
-  // Calculate total cards
   const totalCards = deck.cards.reduce((sum, entry) => sum + entry.count, 0);
 
   return (

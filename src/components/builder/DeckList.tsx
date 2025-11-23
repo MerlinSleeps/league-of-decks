@@ -41,7 +41,7 @@ export default function DeckList() {
     }
     try {
       const token = await user.getIdToken();
-      // Construct the full deck object to save
+
       const fullDeck = {
         legend: championLegend,
         mainDeck,
