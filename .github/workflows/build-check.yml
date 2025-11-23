@@ -26,6 +26,17 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
+      - name: Debug Secrets
+        env:
+          PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+        run: |
+          if [ -z "$PRIVATE_KEY" ]; then
+            echo "❌ FIREBASE_PRIVATE_KEY is EMPTY or MISSING"
+            exit 1
+          else
+            echo "✅ FIREBASE_PRIVATE_KEY found (Length: ${#PRIVATE_KEY})"
+          fi
+
       - name: Try Building
         run: npm run build
         env:
