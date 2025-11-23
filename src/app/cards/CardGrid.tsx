@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/types/card';
 
@@ -47,20 +48,24 @@ export default function CardGrid({ allCards }: CardGridProps) {
                 <CardTitle className="text-lg">{card.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="aspect-[3/4] w-full bg-gray-700 rounded-md mb-2">
-                  <img
+                <div className="aspect-[3/4] w-full bg-gray-700 rounded-md mb-2 relative">
+                  <Image
                     src={card.art.thumbnailURL}
                     alt={card.name}
-                    className="w-full h-full object-cover rounded-md"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
+                    className="object-cover rounded-md"
                   />
                 </div>
                 <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
               <CardFooter>
-                <p className="text-lg font-bold">Cost: {card.stats.cost}</p>
-                <p className="text-lg font-bold">Power: {card.stats.power}</p>
-                <p className="text-lg font-bold">Energy: {card.stats.energy}</p>
-                <p className="text-lg font-bold">Might: {card.stats.might}</p>
+                <div className="w-full">
+                  <p className="text-lg font-bold">Cost: {card.stats.cost}</p>
+                  <p className="text-lg font-bold">Power: {card.stats.power}</p>
+                  <p className="text-lg font-bold">Energy: {card.stats.energy}</p>
+                  <p className="text-lg font-bold">Might: {card.stats.might}</p>
+                </div>
               </CardFooter>
             </ShadCard>
           </Link>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState, useMemo } from 'react';
 import type { Card } from '@/types/card';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
@@ -47,9 +48,11 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
               <CardTitle className="text-lg">{card.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <img
+              <Image
                 src={card.art.thumbnailURL}
                 alt={card.name}
+                width={300}
+                height={400}
                 className="w-full rounded-md mb-2 aspect-[3/4] object-cover"
               />
               <Button

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { useAuth } from '@/context/AuthContext';
@@ -90,7 +91,7 @@ export default function DeckList() {
             <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Legend</h3>
             {championLegend ? (
               <div className="bg-purple-900/30 border border-purple-500/50 p-3 rounded flex items-center gap-3">
-                <img src={championLegend.art.thumbnailURL} alt={championLegend.name} className="w-12 h-12 rounded object-cover" />
+                <Image src={championLegend.art.thumbnailURL} alt={championLegend.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
                 <div>
                   <p className="font-bold text-purple-200">{championLegend.name}</p>
                   <p className="text-xs text-purple-300">{championLegend.faction}</p>
@@ -188,7 +189,7 @@ export default function DeckList() {
             )}
 
             <div className="space-y-1">
-              {battlefieldDeck.map(({ card, count }) => (
+              {battlefieldDeck.map(({ card }) => (
                 <div key={card.id} className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors">
                   <span className="truncate text-orange-200">{card.name}</span>
                   <div className="flex items-center gap-2">

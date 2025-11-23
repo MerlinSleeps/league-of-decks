@@ -85,7 +85,7 @@ export default function MyDecksPage() {
       <h1 className="text-3xl font-bold mb-6">My Decks</h1>
 
       {decks.length === 0 ? (
-        <p>You haven't saved any decks yet.</p>
+        <p>You haven&apos;t saved any decks yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {decks.map((deck) => (

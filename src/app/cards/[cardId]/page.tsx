@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getFirestore } from '@/lib/firebaseAdmin';
 import type { Card } from '@/types/card';
 
@@ -46,7 +47,7 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
     return (
       <main className="container mx-auto p-4">
         <h1 className="text-3xl font-bold">Card not found</h1>
-        <p>We couldn't find a card with the ID: {cardId}</p>
+        <p>We couldn&apos;t find a card with the ID: {cardId}</p>
       </main>
     );
   }
@@ -59,9 +60,11 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
             <CardTitle className="text-2xl">{card.name}</CardTitle>
           </CardHeader>
           <CardContent>
-            <img
+            <Image
               src={card.art.thumbnailURL}
               alt={card.name}
+              width={400}
+              height={560}
               className="w-full rounded-md mb-4"
             />
             <p className="text-lg mb-2">{card.description}</p>

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const admin = require('firebase-admin');
 
 const serviceAccount = require('../serviceAccountKey.json');
@@ -16,10 +19,9 @@ const db = admin.firestore();
 async function seedDatabase() {
   const cardsCollection = db.collection('cards');
 
-  // It reads the NEW json file here
   for (const card of cardData) {
     const docRef = cardsCollection.doc(card.id);
-    await docRef.set(card); // Overwrites the old doc with the new structure
+    await docRef.set(card);
     console.log(`Updated card: ${card.name}`);
   }
 }
