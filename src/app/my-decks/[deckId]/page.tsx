@@ -4,7 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, Timestamp } from 'firebase/firestore';
-import { DeckEntry } from '@/context/DeckBuilderContext';
+import { DeckEntry } from '@/types/card';
 
 interface SavedDeck {
   id: string;
@@ -14,9 +14,9 @@ interface SavedDeck {
 }
 
 interface DeckDetailPageProps {
-params: Promise<{ 
-    deckId: string 
-}>;
+  params: Promise<{
+    deckId: string
+  }>;
 }
 
 export default function DeckDetailPage({ params }: DeckDetailPageProps) {
@@ -69,7 +69,7 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
 
       <div className="max-w-md bg-gray-900 p-4 rounded-lg border border-gray-700">
         {[...deck.cards]
-          .sort((a, b) => a.card.cost - b.card.cost || a.card.name.localeCompare(b.card.name))
+          .sort((a, b) => a.card.stats.cost - b.card.stats.cost || a.card.name.localeCompare(b.card.name))
           .map(({ card, count }) => (
             <div
               key={card.id}
@@ -77,7 +77,7 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
             >
               <div>
                 <span className="font-semibold">{card.name}</span>
-                <p className="text-xs text-gray-400">Cost: {card.cost}</p>
+                <p className="text-xs text-gray-400">Cost: {card.stats.cost}</p>
               </div>
               <span className="font-bold">x{count}</span>
             </div>

@@ -1,4 +1,4 @@
-import { adminDb } from '@/lib/firebaseAdmin';
+import { getFirestore } from '@/lib/firebaseAdmin';
 import type { Card } from '@/types/card';
 import { DeckBuilderProvider } from '@/context/DeckBuilderContext';
 
@@ -6,7 +6,8 @@ import DeckList from '@/components/builder/DeckList';
 import BuilderCardGrid from '@/components/builder/BuilderCardGrid';
 
 async function getCards(): Promise<Card[]> {
-  const cardsCollectionRef = adminDb.collection('cards');
+  const firestore = getFirestore();
+  const cardsCollectionRef = firestore.collection('cards');
   const queryRef = cardsCollectionRef.orderBy('name', 'asc');
   const querySnapshot = await queryRef.get();
   const cards = querySnapshot.docs.map((doc) => doc.data() as Card);

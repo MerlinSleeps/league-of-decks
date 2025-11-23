@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { DeckEntry } from '@/context/DeckBuilderContext';
+import { DeckEntry } from '@/types/card';
 
 interface SavedDeck {
   id: string;

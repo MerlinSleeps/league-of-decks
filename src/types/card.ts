@@ -1,3 +1,5 @@
+export type Domain = string;
+
 export interface CardStatsDTO {
   energy: number;
   might: number;
@@ -14,7 +16,7 @@ export interface CardArtDTO {
 export interface Card {
   id: string;
   collectorNumber: number;
-  set: string;       
+  set: string;
   name: string; // card name
   description: string;
   type: string;

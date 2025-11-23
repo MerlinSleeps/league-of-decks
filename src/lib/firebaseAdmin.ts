@@ -1,30 +1,27 @@
 import * as admin from 'firebase-admin';
+import serviceAccount from '../../serviceAccountKey.json'; // Import your local key
 
-let adminDb: admin.firestore.Firestore;
+// Helper to initialize
+function initAdmin() {
+  // Check if already initialized to prevent "duplicate app" errors
+  if (!admin.apps.length) {
 
-if (!admin.apps.length) {
-  try {
-    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-    const projectId = process.env.FIREBASE_PROJECT_ID;
-
-    if (!privateKey || !clientEmail || !projectId) {
-      throw new Error('Missing Firebase Admin SDK environment variables.');
+    // Safety check: ensure the JSON file was imported correctly
+    if (!serviceAccount) {
+      throw new Error('serviceAccountKey.json is missing or empty');
     }
 
     admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId,
-        privateKey,
-        clientEmail,
-      }),
+      // We cast it to ServiceAccount to satisfy TypeScript
+      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
     });
-    console.log('Firebase Admin SDK initialized successfully.');
-  } catch (error: any) {
-    console.error('Firebase admin initialization error:', error.message);
+
+    console.log('✅ Firebase Admin SDK initialized with JSON file.');
   }
 }
 
-adminDb = admin.firestore();
-
-export { adminDb };
+// ⭐️ Export the function
+export function getFirestore() {
+  initAdmin(); // Initialize only when called
+  return admin.firestore();
+}

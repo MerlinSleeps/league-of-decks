@@ -1,6 +1,6 @@
-import { adminDb } from '@/lib/firebaseAdmin';
+import { getFirestore } from '@/lib/firebaseAdmin';
 import { auth as adminAuth } from 'firebase-admin';
-import { DeckEntry } from '@/context/DeckBuilderContext';
+import { DeckEntry } from '@/types/card';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -24,13 +24,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid deck data' }, { status: 400 });
     }
 
-    const newDeckRef = await adminDb
+    const newDeckRef = await getFirestore()
       .collection('users')
       .doc(userId)
       .collection('decks')
       .add({
         name: name,
-        cards: deck, 
+        cards: deck,
         createdAt: new Date(),
       });
 

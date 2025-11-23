@@ -49,15 +49,18 @@ export default function CardGrid({ allCards }: CardGridProps) {
               <CardContent>
                 <div className="aspect-[3/4] w-full bg-gray-700 rounded-md mb-2">
                   <img
-                    src={card.imageUrl}
+                    src={card.art.thumbnailURL}
                     alt={card.name}
                     className="w-full h-full object-cover rounded-md"
                   />
                 </div>
-                <p className="text-sm text-gray-400">{card.text}</p>
+                <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
               <CardFooter>
-                <p className="text-lg font-bold">Cost: {card.cost}</p>
+                <p className="text-lg font-bold">Cost: {card.stats.cost}</p>
+                <p className="text-lg font-bold">Power: {card.stats.power}</p>
+                <p className="text-lg font-bold">Energy: {card.stats.energy}</p>
+                <p className="text-lg font-bold">Might: {card.stats.might}</p>
               </CardFooter>
             </ShadCard>
           </Link>

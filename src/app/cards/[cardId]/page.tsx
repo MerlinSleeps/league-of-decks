@@ -1,4 +1,4 @@
-import { adminDb } from '@/lib/firebaseAdmin';
+import { getFirestore } from '@/lib/firebaseAdmin';
 import type { Card } from '@/types/card';
 
 import {
@@ -21,9 +21,10 @@ async function getCard(id: string): Promise<Card | null> {
     console.warn('getCard received an invalid ID. Aborting fetch.');
     return null;
   }
-    
+
   try {
-    const docRef = adminDb.collection('cards').doc(id);
+    const firestore = getFirestore();
+    const docRef = firestore.collection('cards').doc(id);
     const docSnap = await docRef.get();
 
     if (!docSnap.exists) {
@@ -59,12 +60,15 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
           </CardHeader>
           <CardContent>
             <img
-              src={card.imageUrl}
+              src={card.art.thumbnailURL}
               alt={card.name}
               className="w-full rounded-md mb-4"
             />
-            <p className="text-lg mb-2">{card.text}</p>
-            <p className="text-xl font-bold">Cost: {card.cost}</p>
+            <p className="text-lg mb-2">{card.description}</p>
+            <p className="text-xl font-bold">Cost: {card.stats.cost}</p>
+            <p className="text-xl font-bold">Power: {card.stats.power}</p>
+            <p className="text-xl font-bold">Energy: {card.stats.energy}</p>
+            <p className="text-xl font-bold">Might: {card.stats.might}</p>
           </CardContent>
         </ShadCard>
       </div>

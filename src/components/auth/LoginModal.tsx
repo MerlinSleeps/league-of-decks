@@ -35,6 +35,7 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
       // On success, Firebase's onAuthStateChanged (in our AuthContext)
       // will update the user state.
       setIsOpen(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     }
@@ -46,6 +47,7 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
       await createUserWithEmailAndPassword(auth, email, password);
       // On success, the user is automatically logged in
       setIsOpen(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     }

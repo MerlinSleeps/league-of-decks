@@ -48,7 +48,7 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
             </CardHeader>
             <CardContent>
               <img
-                src={card.imageUrl}
+                src={card.art.thumbnailURL}
                 alt={card.name}
                 className="w-full rounded-md mb-2 aspect-[3/4] object-cover"
               />
