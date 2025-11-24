@@ -2,6 +2,8 @@
 
 import type { Card, Domain } from '@/types/card';
 import type { DeckEntry } from '@/types/card';
+import { CARD_TYPE } from '@/constants/card-type';
+import { DOMAIN } from '@/constants/domains';
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 // --- DECK BUILDING RULES (from our conversation) ---
@@ -14,12 +16,11 @@ const RULES = {
   SIGNATURE_CARD_LIMIT: 3,
 };
 
+
 // --- HELPER FUNCTIONS FOR DATA NORMALIZATION ---
 
-function getCardType(card: Card): 'Legend' | 'Champion' | 'Unit' | 'Spell' | 'Gear' | 'Rune' | 'Battlefield' {
-  if (card.type.includes('Legend')) return 'Legend';
-  if (card.type.includes('Champion')) return 'Champion';
-  return card.type as 'Legend' | 'Champion' | 'Unit' | 'Spell' | 'Gear' | 'Rune' | 'Battlefield';
+function getCardTypes(card: Card): string[] {
+  return card.type ? card.type.split(' ') : [];
 }
 
 function getDomains(card: Card): Domain[] {
@@ -103,57 +104,47 @@ export const DeckBuilderProvider = ({
   // --- 1. CORE DECK LOGIC (ADD/REMOVE) ---
 
   const setLegend = (card: Card) => {
-    if (getCardType(card) === 'Legend') {
-      setChampionLegend(card);
-    }
+    setChampionLegend(card);
   };
 
   const addCard = (cardToAdd: Card) => {
-    const type = getCardType(cardToAdd);
+    const type = getCardTypes(cardToAdd);
 
-    switch (type) {
-      case 'Legend':
-        setChampionLegend(cardToAdd);
-        break;
-
-      case 'Rune':
-        setRuneDeck((current) => {
-          const entry = current.find((e) => e.card.id === cardToAdd.id);
-          if (entry) {
-            // Runes: Unlimited copies allowed
-            return current.map((e) =>
-              e.card.id === cardToAdd.id
-                ? { ...e, count: e.count + 1 }
-                : e
-            );
-          }
-          return [...current, { card: cardToAdd, count: 1 }];
-        });
-        break;
-
-      case 'Battlefield':
-        setBattlefieldDeck((current) => {
-          const exists = current.find((e) => e.card.id === cardToAdd.id);
-          if (exists) return current;
-          return [...current, { card: cardToAdd, count: 1 }];
-        });
-        break;
-      case 'Champion':
-      case 'Unit':
-      case 'Spell':
-      case 'Gear':
-        setMainDeck((current) => {
-          const entry = current.find((e) => e.card.id === cardToAdd.id);
-          if (entry) {
-            return current.map((e) =>
-              e.card.id === cardToAdd.id
-                ? { ...e, count: Math.min(e.count + 1, RULES.MAIN_DECK_COPY_LIMIT) }
-                : e
-            );
-          }
-          return [...current, { card: cardToAdd, count: 1 }];
-        });
-        break;
+    if (type.includes(CARD_TYPE.Legend)) {
+      setLegend(cardToAdd);
+    }
+    else if (type.includes(CARD_TYPE.Rune)) {
+      setRuneDeck((current) => {
+        const entry = current.find((e) => e.card.id === cardToAdd.id);
+        if (entry) {
+          return current.map((e) =>
+            e.card.id === cardToAdd.id
+              ? { ...e, count: e.count + 1 }
+              : e
+          );
+        }
+        return [...current, { card: cardToAdd, count: 1 }];
+      });
+    }
+    else if (type.includes(CARD_TYPE.Battlefield)) {
+      setBattlefieldDeck((current) => {
+        const exists = current.find((e) => e.card.id === cardToAdd.id);
+        if (exists) return current;
+        return [...current, { card: cardToAdd, count: 1 }];
+      });
+    }
+    else {
+      setMainDeck((current) => {
+        const entry = current.find((e) => e.card.id === cardToAdd.id);
+        if (entry) {
+          return current.map((e) =>
+            e.card.id === cardToAdd.id
+              ? { ...e, count: Math.min(e.count + 1, RULES.MAIN_DECK_COPY_LIMIT) }
+              : e
+          );
+        }
+        return [...current, { card: cardToAdd, count: 1 }];
+      });
     }
   };
 
@@ -230,13 +221,7 @@ export const DeckBuilderProvider = ({
       if (!isCardInDomain(entry.card, state.domainIdentity)) {
         state.mainDeckErrors.push(`${entry.card.name}: Not in your Domain Identity.`);
       }
-      const type = getCardType(entry.card);
-      if (type === 'Champion') {
-        const tag = getChampionTag(entry.card);
-        if (tag !== state.championTag) {
-          state.mainDeckErrors.push(`${entry.card.name}: Champion tag does not match Legend.`);
-        }
-      }
+      const type = getCardTypes(entry.card);
       if (isSignature(entry.card)) {
         const tag = getChampionTag(entry.card);
         if (tag !== state.championTag) {
@@ -247,7 +232,7 @@ export const DeckBuilderProvider = ({
 
     // Rule 103.2.d.1: 3-signature card limit
     state.totalSignatureCards = mainDeck
-      .filter((e) => isSignature(e.card))
+      .filter((e) => getCardTypes(e.card).includes(CARD_TYPE.Signature))
       .reduce((sum, e) => sum + e.count, 0);
     state.isSignatureCardCountValid = state.totalSignatureCards <= RULES.SIGNATURE_CARD_LIMIT;
 
