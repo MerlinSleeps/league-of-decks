@@ -49,11 +49,13 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
             </CardHeader>
             <CardContent>
 
-              <CardImage
-                src={card.art?.thumbnailURL}
-                alt={card.name}
-                className="w-full rounded-md mb-2 aspect-[3/4]"
-              />
+              <div className="aspect-[3/4] w-full relative mb-2 rounded-md overflow-hidden">
+                <CardImage
+                  key={card.art?.thumbnailURL}
+                  src={card.art?.thumbnailURL}
+                  alt={card.name}
+                />
+              </div>
 
               <p className="text-sm text-gray-400">{card.description}</p>
               <Button

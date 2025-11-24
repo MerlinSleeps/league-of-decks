@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Card } from '@/types/card';
 import { CardImage } from '@/components/ui/CardImage';
@@ -48,15 +47,14 @@ export default function CardGrid({ allCards }: CardGridProps) {
               <CardHeader>
                 <CardTitle className="text-lg">{card.name}</CardTitle>
               </CardHeader>
-              <CardContent>
-
-                <CardImage
-                  src={card.art?.thumbnailURL}
-                  alt={card.name}
-                  className="w-full rounded-md mb-2 aspect-[3/4]"
-                />
-
-                <p className="text-sm text-gray-400">{card.description}</p>
+              <CardContent className="p-4">
+                <div className="aspect-[3/4] w-full relative mb-2 rounded-md overflow-hidden">
+                  <CardImage
+                    key={card.art?.thumbnailURL}
+                    src={card.art?.thumbnailURL}
+                    alt={card.name}
+                  />
+                </div>
               </CardContent>
               <CardFooter>
                 <div className="w-full">

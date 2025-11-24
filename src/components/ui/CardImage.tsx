@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react'; // Remove useEffect import
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -13,12 +13,7 @@ interface CardImageProps {
 export function CardImage({ src, alt, className }: CardImageProps) {
     const [error, setError] = useState(false);
 
-    useEffect(() => {
-        setError(false);
-    }, [src]);
-
-    const fallbackImage = '/assets/card-back.png';
-
+    const fallbackImage = '/card-back.png';
     const imageSource = (src && !error) ? src : fallbackImage;
 
     return (
