@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -10,29 +11,26 @@ interface CardImageProps {
 }
 
 export function CardImage({ src, alt, className }: CardImageProps) {
+    const [error, setError] = useState(false);
 
-    const isExternal = src?.startsWith('http');
+    useEffect(() => {
+        setError(false);
+    }, [src]);
 
-    if (src && isExternal) {
-        return (
-            <div className={cn("relative overflow-hidden bg-gray-800", className)}>
-                <Image
-                    src={src}
-                    alt={alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
-                />
-            </div>
-        );
-    }
+    const fallbackImage = '/assets/card-back.png';
+
+    const imageSource = (src && !error) ? src : fallbackImage;
 
     return (
-        <div className={cn(
-            "flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 border border-gray-600 text-gray-400 p-4 text-center text-xs font-bold uppercase tracking-widest select-none",
-            className
-        )}>
-            {alt}
+        <div className={cn("relative overflow-hidden bg-gray-800", className)}>
+            <Image
+                src={imageSource}
+                alt={alt}
+                fill
+                className="object-cover transition-opacity duration-300 ease-in-out"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
+                onError={() => setError(true)}
+            />
         </div>
     );
 }
