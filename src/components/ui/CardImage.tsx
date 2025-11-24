@@ -13,7 +13,7 @@ interface CardImageProps {
 export function CardImage({ src, alt, className }: CardImageProps) {
     const [error, setError] = useState(false);
 
-    const fallbackImage = '/card-back.png';
+    const fallbackImage = 'assets/card-back.png';
     const imageSource = (src && !error) ? src : fallbackImage;
 
     return (
