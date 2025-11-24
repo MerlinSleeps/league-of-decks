@@ -30,6 +30,15 @@ export function getFirestore() {
   const projectId = process.env.FIREBASE_PROJECT_ID;
 
   if (!privateKey || !clientEmail || !projectId) {
+    if (!privateKey) {
+      throw new Error('Missing Firebase Admin private key. Check .env.local (local) or Vercel Env Vars (production).');
+    }
+    if (!clientEmail) {
+      throw new Error('Missing Firebase Admin client email. Check .env.local (local) or Vercel Env Vars (production).');
+    }
+    if (!projectId) {
+      throw new Error('Missing Firebase Admin project ID. Check .env.local (local) or Vercel Env Vars (production).');
+    }
     throw new Error(
       'Missing Firebase Admin keys. Check .env.local (local) or Vercel Env Vars (production).'
     );
