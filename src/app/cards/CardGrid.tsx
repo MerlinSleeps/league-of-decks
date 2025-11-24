@@ -52,7 +52,7 @@ export default function CardGrid({ allCards }: CardGridProps) {
                   <CardImage
                     key={card.art?.thumbnailURL}
                     src={card.art?.thumbnailURL}
-                    alt={card.name}
+                    alt={""}
                   />
                 </div>
               </CardContent>
