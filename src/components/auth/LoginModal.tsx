@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from 'react';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile
 } from 'firebase/auth';
-
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,86 +18,206 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 
+const PASSWORD_REGEX = /^(?=.*[0-9])(?=.*[!@#$%^&*.])[\S]{8,}$/;
+
+type AuthMode = 'login' | 'signup' | 'reset';
 
 export function LoginModal({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<AuthMode>('login');
+
+  // Form State
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  // Feedback State
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
-    setError(null);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-
-      setIsOpen(false);
-    } catch (err: unknown) {
-      setError((err as Error).message);
+  // Reset state when opening/closing
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      setMode('login');
+      setError(null);
+      setSuccessMessage(null);
+      setEmail('');
+      setPassword('');
+      setUsername('');
     }
   };
 
-  const handleSignUp = async () => {
+  const handleAuthAction = async () => {
     setError(null);
+    setSuccessMessage(null);
+    setIsLoading(true);
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      setIsOpen(false);
-    } catch (err: unknown) {
-      setError((err as Error).message);
+      // --- 1. HANDLE LOGIN ---
+      if (mode === 'login') {
+        await signInWithEmailAndPassword(auth, email, password);
+        setIsOpen(false);
+      }
+
+      // --- 2. HANDLE SIGN UP ---
+      else if (mode === 'signup') {
+
+        if (!PASSWORD_REGEX.test(password)) {
+          throw new Error("Password must be at least 8 characters and contain a number and a special character (!@#$%^&*.).");
+        }
+        if (!username.trim()) {
+          throw new Error("Username is required.");
+        }
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await updateProfile(user, { displayName: username });
+
+        await setDoc(doc(db, "users", user.uid), {
+          username: username,
+          email: email,
+          createdAt: serverTimestamp(),
+          deckCount: 0,
+        });
+
+        setIsOpen(false);
+      }
+
+      // --- 3. HANDLE PASSWORD RESET ---
+      else if (mode === 'reset') {
+        await sendPasswordResetEmail(auth, email);
+        setSuccessMessage("Check your email for a password reset link.");
+        setIsLoading(false);
+        return;
+      }
+
+    } catch (err: any) {
+      let msg = err.message;
+      if (msg.includes("auth/email-already-in-use")) msg = "Email is already registered.";
+      if (msg.includes("auth/invalid-credential")) msg = "Invalid email or password.";
+      if (msg.includes("auth/weak-password")) msg = "Password is too weak.";
+      setError(msg);
+    } finally {
+      if (mode !== 'reset') setIsLoading(false);
     }
+  };
+
+  const getTitle = () => {
+    if (mode === 'login') return "Welcome Back";
+    if (mode === 'signup') return "Create an Account";
+    return "Reset Password";
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>Log In or Sign Up</DialogTitle>
-          <DialogDescription>
-            Enter your email and password to continue.
+          <DialogTitle className="text-center text-2xl">{getTitle()}</DialogTitle>
+          <DialogDescription className="text-center">
+            {mode === 'reset'
+              ? "Enter your email to receive a reset link."
+              : "Enter your details to continue to Runic Library."}
           </DialogDescription>
         </DialogHeader>
+
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          {error && (
-            <p className="col-span-4 text-center text-sm text-red-500">
-              {error}
-            </p>
+
+          {mode === 'signup' && (
+            <div className="grid gap-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                placeholder="RiftMaster99"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
           )}
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={handleSignUp}>
-            Sign Up
+
+          {mode !== 'reset' && (
+            <div className="grid gap-2">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="password">Password</Label>
+                {mode === 'login' && (
+                  <button
+                    className="text-xs text-cyan-400 hover:underline"
+                    onClick={() => setMode('reset')}
+                  >
+                    Forgot?
+                  </button>
+                )}
+              </div>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          )}
+
+          {error && <p className="text-sm text-red-500 text-center font-medium">{error}</p>}
+          {successMessage && <p className="text-sm text-green-500 text-center font-medium">{successMessage}</p>}
+
+          <Button onClick={handleAuthAction} disabled={isLoading} className="w-full mt-2">
+            {isLoading ? "Processing..." : (
+              mode === 'login' ? "Log In" :
+                mode === 'signup' ? "Sign Up" : "Send Reset Link"
+            )}
           </Button>
-          <Button onClick={handleLogin}>Log In</Button>
-        </DialogFooter>
+
+          <div className="relative mt-2">
+            <div className="absolute inset-0 flex items-center">
+              <Separator className="w-full" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or</span>
+            </div>
+          </div>
+
+          <div className="text-center text-sm">
+            {mode === 'login' ? (
+              <p>
+                Don't have an account?{" "}
+                <button
+                  className="text-cyan-400 hover:underline font-bold"
+                  onClick={() => setMode('signup')}
+                >
+                  Sign Up
+                </button>
+              </p>
+            ) : (
+              <p>
+                Already have an account?{" "}
+                <button
+                  className="text-cyan-400 hover:underline font-bold"
+                  onClick={() => setMode('login')}
+                >
+                  Log In
+                </button>
+              </p>
+            )}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
