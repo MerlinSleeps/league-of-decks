@@ -63,6 +63,37 @@ export default function DeckList() {
     id: 'deck-list',
   });
 
+  const { setNodeRef: setChampionRef } = useDroppable({
+    id: 'champion-slot',
+    disabled: !championLegend,
+  });
+
+  // Calculate Champion Card (if present in Main Deck and matches Legend)
+  const championCardEntry = mainDeck.find(entry =>
+    entry.card.type.includes('Champion Unit') &&
+    championLegend &&
+    entry.card.tags.some(tag => championLegend.tags.includes(tag))
+  );
+  const championCard = championCardEntry?.card;
+
+  // Filter out the Champion Card from the Main Deck display list
+  // We only filter ONE copy if it exists, but since it's a Champion, usually there's only one or we want to show others?
+  // The requirement implies the Champion Card is "displayed beneath the Legend".
+  // If we have multiple copies, do we show the rest in Main Deck?
+  // Let's assume we show the first copy in the Champion slot, and others in Main Deck if any (though usually unique).
+  // Actually, for simplicity and typical deck building, let's filter out the entry entirely from the visual list if it's the champion card,
+  // OR just decrement the count for display if we want to support multiple (but usually unique).
+  // Let's filter out the specific entry that is the champion card for now.
+  const displayMainDeck = mainDeck.map(entry => {
+    if (championCard && entry.card.id === championCard.id) {
+      // If this is the champion card, decrement count by 1 for display
+      // If count becomes 0, we filter it out later
+      return { ...entry, count: entry.count - 1 };
+    }
+    return entry;
+  }).filter(entry => entry.count > 0);
+
+
   const handleSaveDeck = async () => {
     if (!user) {
       alert('You must be logged in to save a deck.');
@@ -134,6 +165,26 @@ export default function DeckList() {
             )}
           </div>
 
+          {/* CHAMPION SECTION */}
+          <div ref={setChampionRef}>
+            <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Champion</h3>
+            {championCard ? (
+              <DraggableDeckItem id={`champion-${championCard.id}`} deckType="main" card={championCard}>
+                <div className="bg-yellow-900/30 border border-yellow-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing">
+                  <Image src={championCard.art.thumbnailURL} alt={championCard.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
+                  <div>
+                    <p className="font-bold text-yellow-200">{championCard.name}</p>
+                    <p className="text-xs text-yellow-300">{championCard.type}</p>
+                  </div>
+                </div>
+              </DraggableDeckItem>
+            ) : (
+              <div className={`border border-dashed rounded p-4 text-center text-sm transition-colors ${championLegend ? 'border-gray-600 text-gray-500' : 'border-gray-800 text-gray-700 bg-gray-900/50'}`}>
+                {championLegend ? 'Drag Champion here' : 'Select Legend first'}
+              </div>
+            )}
+          </div>
+
           {/* MAIN DECK SECTION */}
           <div>
             <div className="flex justify-between items-center mb-2">
@@ -150,7 +201,7 @@ export default function DeckList() {
             )}
 
             <div className="space-y-1">
-              {mainDeck.map(({ card, count }) => (
+              {displayMainDeck.map(({ card, count }) => (
                 <DraggableDeckItem key={card.id} id={`main-${card.id}`} deckType="main" card={card}>
                   <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
                     <div className="flex items-center gap-2 overflow-hidden">

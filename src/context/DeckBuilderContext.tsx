@@ -46,7 +46,6 @@ function isCardInDomain(card: Card, identity: Domain[]): boolean {
 
 // --- CONTEXT DEFINITION ---
 
-// This is the shape of our validation results
 export interface ValidationState {
   domainIdentity: Domain[];
   championTag: string | null;

@@ -5,7 +5,6 @@ import type { Card } from '@/types/card';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { CardImage } from '@/components/ui/CardImage';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 
 import {
   Card as ShadCard,
@@ -29,8 +28,6 @@ function DraggableCard({ card }: { card: Card }) {
     },
   });
 
-  // We don't apply transform to the original card in the grid.
-  // It stays in place (remnant) while the DragOverlay follows the mouse.
   const style = undefined;
 
   const { addCard } = useDeckBuilder();

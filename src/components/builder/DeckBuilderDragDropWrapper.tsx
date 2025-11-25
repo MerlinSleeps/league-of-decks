@@ -18,6 +18,7 @@ export default function DeckBuilderDragDropWrapper({
         removeFromMainDeck,
         removeFromRuneDeck,
         removeFromBattlefieldDeck,
+        championLegend,
     } = useDeckBuilder();
 
     const [activeCard, setActiveCard] = useState<Card | null>(null);
@@ -76,6 +77,22 @@ export default function DeckBuilderDragDropWrapper({
                 const card = active.data.current?.card as Card;
                 if (card) {
                     addCard(card);
+                }
+            }
+        }
+
+        if (over.id === 'champion-slot') {
+            const source = active.data.current?.source;
+            if (source === 'grid') {
+                const card = active.data.current?.card as Card;
+                if (card && championLegend) {
+                    // Check if it's a Champion Unit and matches Legend tag
+                    const isChampionUnit = card.type.includes('Champion Unit');
+                    const matchesLegend = card.tags.some(tag => championLegend.tags.includes(tag));
+
+                    if (isChampionUnit && matchesLegend) {
+                        addCard(card);
+                    }
                 }
             }
         }
