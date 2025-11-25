@@ -68,7 +68,6 @@ export default function DeckList() {
     disabled: !championLegend,
   });
 
-  // Calculate Champion Card (if present in Main Deck and matches Legend)
   const championCardEntry = mainDeck.find(entry =>
     entry.card.type.includes('Champion Unit') &&
     championLegend &&
@@ -76,18 +75,9 @@ export default function DeckList() {
   );
   const championCard = championCardEntry?.card;
 
-  // Filter out the Champion Card from the Main Deck display list
-  // We only filter ONE copy if it exists, but since it's a Champion, usually there's only one or we want to show others?
-  // The requirement implies the Champion Card is "displayed beneath the Legend".
-  // If we have multiple copies, do we show the rest in Main Deck?
-  // Let's assume we show the first copy in the Champion slot, and others in Main Deck if any (though usually unique).
-  // Actually, for simplicity and typical deck building, let's filter out the entry entirely from the visual list if it's the champion card,
-  // OR just decrement the count for display if we want to support multiple (but usually unique).
-  // Let's filter out the specific entry that is the champion card for now.
+
   const displayMainDeck = mainDeck.map(entry => {
     if (championCard && entry.card.id === championCard.id) {
-      // If this is the champion card, decrement count by 1 for display
-      // If count becomes 0, we filter it out later
       return { ...entry, count: entry.count - 1 };
     }
     return entry;

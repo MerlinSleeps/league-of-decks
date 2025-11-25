@@ -5,7 +5,6 @@ import type { Card } from '@/types/card';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { CardImage } from '@/components/ui/CardImage';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-
 import {
   Card as ShadCard,
   CardContent,

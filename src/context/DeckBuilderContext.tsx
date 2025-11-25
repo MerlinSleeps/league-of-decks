@@ -234,7 +234,6 @@ export const DeckBuilderProvider = ({
       }
     });
 
-    // Rule 103.2.d.1: 3-signature card limit
     state.totalSignatureCards = mainDeck
       .filter((e) => getCardTypes(e.card).includes(CARD_TYPE.Signature))
       .reduce((sum, e) => sum + e.count, 0);
