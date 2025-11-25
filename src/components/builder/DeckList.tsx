@@ -4,6 +4,9 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { useAuth } from '@/context/AuthContext';
+import { useDroppable, useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
+import type { Card } from '@/types/card';
 
 import { Button } from '@/components/ui/button';
 import { X, AlertCircle, CheckCircle2 } from 'lucide-react';
@@ -20,6 +23,27 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 
+function DraggableDeckItem({ id, children, deckType, card }: { id: string, children: React.ReactNode, deckType: string, card: Card }) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: id,
+    data: {
+      source: 'deck-list',
+      deckType: deckType,
+      card: card,
+    },
+  });
+
+  const style = {
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      {children}
+    </div>
+  );
+}
+
 export default function DeckList() {
   const {
     championLegend,
@@ -34,6 +58,10 @@ export default function DeckList() {
 
   const { user } = useAuth();
   const [deckName, setDeckName] = useState('');
+
+  const { setNodeRef } = useDroppable({
+    id: 'deck-list',
+  });
 
   const handleSaveDeck = async () => {
     if (!user) {
@@ -67,7 +95,7 @@ export default function DeckList() {
   };
 
   return (
-    <aside className="sticky top-24 bg-gray-900 p-4 rounded-lg border border-gray-700 h-[calc(100vh-8rem)] flex flex-col">
+    <aside ref={setNodeRef} className="sticky top-24 bg-gray-900 p-4 rounded-lg border border-gray-700 h-[calc(100vh-8rem)] flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Your Deck</h2>
         <div className="flex items-center gap-2">
@@ -90,13 +118,15 @@ export default function DeckList() {
           <div>
             <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Legend</h3>
             {championLegend ? (
-              <div className="bg-purple-900/30 border border-purple-500/50 p-3 rounded flex items-center gap-3">
-                <Image src={championLegend.art.thumbnailURL} alt={championLegend.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
-                <div>
-                  <p className="font-bold text-purple-200">{championLegend.name}</p>
-                  <p className="text-xs text-purple-300">{championLegend.faction}</p>
+              <DraggableDeckItem id={`legend-${championLegend.id}`} deckType="legend" card={championLegend}>
+                <div className="bg-purple-900/30 border border-purple-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing">
+                  <Image src={championLegend.art.thumbnailURL} alt={championLegend.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
+                  <div>
+                    <p className="font-bold text-purple-200">{championLegend.name}</p>
+                    <p className="text-xs text-purple-300">{championLegend.faction}</p>
+                  </div>
                 </div>
-              </div>
+              </DraggableDeckItem>
             ) : (
               <div className="border border-dashed border-gray-600 rounded p-4 text-center text-gray-500 text-sm">
                 Select a Legend to start
@@ -121,21 +151,27 @@ export default function DeckList() {
 
             <div className="space-y-1">
               {mainDeck.map(({ card, count }) => (
-                <div key={card.id} className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors">
-                  <div className="flex items-center gap-2 overflow-hidden">
-                    <div className="w-6 h-6 bg-gray-900 rounded flex items-center justify-center text-xs font-mono text-gray-400">{card.stats.cost}</div>
-                    <span className="truncate">{card.name}</span>
+                <DraggableDeckItem key={card.id} id={`main-${card.id}`} deckType="main" card={card}>
+                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <div className="w-6 h-6 bg-gray-900 rounded flex items-center justify-center text-xs font-mono text-gray-400">{card.stats.cost}</div>
+                      <span className="truncate">{card.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400">x{count}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent drag start when clicking remove
+                          removeFromMainDeck(card.id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
+                        onPointerDown={(e) => e.stopPropagation()} // Prevent drag start
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">x{count}</span>
-                    <button
-                      onClick={() => removeFromMainDeck(card.id)}
-                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+                </DraggableDeckItem>
               ))}
             </div>
           </div>
@@ -157,18 +193,24 @@ export default function DeckList() {
 
             <div className="space-y-1">
               {runeDeck.map(({ card, count }) => (
-                <div key={card.id} className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors">
-                  <span className="truncate text-blue-200">{card.name}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">x{count}</span>
-                    <button
-                      onClick={() => removeFromRuneDeck(card.id)}
-                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                <DraggableDeckItem key={card.id} id={`rune-${card.id}`} deckType="rune" card={card}>
+                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                    <span className="truncate text-blue-200">{card.name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400">x{count}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromRuneDeck(card.id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </DraggableDeckItem>
               ))}
             </div>
           </div>
@@ -190,17 +232,23 @@ export default function DeckList() {
 
             <div className="space-y-1">
               {battlefieldDeck.map(({ card }) => (
-                <div key={card.id} className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors">
-                  <span className="truncate text-orange-200">{card.name}</span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => removeFromBattlefieldDeck(card.id)}
-                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                <DraggableDeckItem key={card.id} id={`battlefield-${card.id}`} deckType="battlefield" card={card}>
+                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                    <span className="truncate text-orange-200">{card.name}</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromBattlefieldDeck(card.id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-opacity"
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </DraggableDeckItem>
               ))}
             </div>
           </div>

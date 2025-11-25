@@ -81,6 +81,7 @@ interface DeckBuilderContextType {
   removeFromRuneDeck: (cardId: string) => void;
   removeFromBattlefieldDeck: (cardId: string) => void;
   setLegend: (card: Card) => void;
+  removeLegend: () => void;
 
   validation: ValidationState;
 }
@@ -105,6 +106,10 @@ export const DeckBuilderProvider = ({
 
   const setLegend = (card: Card) => {
     setChampionLegend(card);
+  };
+
+  const removeLegend = () => {
+    setChampionLegend(null);
   };
 
   const addCard = (cardToAdd: Card) => {
@@ -291,6 +296,7 @@ export const DeckBuilderProvider = ({
     removeFromRuneDeck,
     removeFromBattlefieldDeck,
     setLegend,
+    removeLegend,
     validation, // Provide the validation state to the app
   };
 
