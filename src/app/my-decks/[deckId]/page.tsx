@@ -2,7 +2,6 @@
 
 import { useState, useEffect, use } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { db } from '@/lib/firebase';
 import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { DeckEntry } from '@/types/card';
 
