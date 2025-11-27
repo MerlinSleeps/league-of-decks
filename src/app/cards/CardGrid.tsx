@@ -8,9 +8,6 @@ import { CardImage } from '@/components/ui/CardImage';
 import {
   Card as ShadCard,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
@@ -43,12 +40,9 @@ export default function CardGrid({ allCards }: CardGridProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {filteredCards.map((card) => (
           <Link href={`/cards/${card.id}`} key={card.id}>
-            <ShadCard className="flex flex-col justify-between overflow-hidden h-full hover:shadow-lg hover:shadow-cyan-500/30 transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-lg">{card.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4">
-                <div className="aspect-[3/4] w-full relative mb-2 rounded-md overflow-hidden">
+            <ShadCard className="flex flex-col justify-between overflow-hidden h-full hover:shadow-lg hover:shadow-cyan-500/30 transition-shadow border-0 bg-transparent">
+              <CardContent className="p-0">
+                <div className="aspect-[3/4] w-full relative rounded-md overflow-hidden">
                   <CardImage
                     key={card.art?.thumbnailURL}
                     src={card.art?.thumbnailURL}
@@ -56,13 +50,6 @@ export default function CardGrid({ allCards }: CardGridProps) {
                   />
                 </div>
               </CardContent>
-              <CardFooter>
-                <div className="w-full">
-                  <p className="text-lg font-bold">Power: {card.stats.power}</p>
-                  <p className="text-lg font-bold">Energy: {card.stats.energy}</p>
-                  <p className="text-lg font-bold">Might: {card.stats.might}</p>
-                </div>
-              </CardFooter>
             </ShadCard>
           </Link>
         ))}

@@ -1,24 +1,13 @@
-import { getFirestore } from '@/lib/firebaseAdmin';
-import type { Card } from '@/types/card';
+import { getAllCards } from '@/lib/cards';
 import { DeckBuilderProvider } from '@/context/DeckBuilderContext';
 import DeckBuilderDragDropWrapper from '@/components/builder/DeckBuilderDragDropWrapper';
-
 import DeckList from '@/components/builder/DeckList';
 import BuilderCardGrid from '@/components/builder/BuilderCardGrid';
-
-async function getCards(): Promise<Card[]> {
-  const firestore = getFirestore();
-  const cardsCollectionRef = firestore.collection('cards');
-  const queryRef = cardsCollectionRef.orderBy('name', 'asc');
-  const querySnapshot = await queryRef.get();
-  const cards = querySnapshot.docs.map((doc) => doc.data() as Card);
-  return cards;
-}
 
 export const revalidate = 3600;
 
 export default async function BuildPage() {
-  const allCards = await getCards();
+  const allCards = await getAllCards();
 
   return (
     <DeckBuilderProvider>

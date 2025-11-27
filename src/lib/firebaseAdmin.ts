@@ -5,7 +5,7 @@ interface FirebaseAdminConfig {
   clientEmail: string;
   privateKey: string;
 }
-// TODO: Look for a better way to handle this
+
 function formatPrivateKey(key: string) {
   return key.replace(/\\n/g, '\n');
 }
@@ -45,7 +45,7 @@ export function getFirestore() {
   }
 
   if (!admin.apps.length) {
-    // TODO: Look for a better way to handle this
+
     admin.initializeApp({
       credential: admin.credential.cert({
         projectId,

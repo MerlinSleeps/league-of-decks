@@ -43,3 +43,5 @@ next-env.d.ts
 
 # Firebase Admin Key
 serviceAccountKey.json
+.vercel
+.env*.local

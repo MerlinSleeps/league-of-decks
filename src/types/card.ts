@@ -17,16 +17,16 @@ export interface Card {
   id: string;
   collectorNumber: number;
   set: string;
-  name: string; // card name
+  name: string;
   description: string;
   type: string;
-  rarity: string; // common, uncommon, rare, epic, overnumbered and alterante art
+  rarity: string;
   faction: string;
   stats: CardStatsDTO;
   keywords: string[];
   art: CardArtDTO;
   flavorText: string;
-  tags: string[]; // additional tags on the card like Signature Card, faction (eg. Ionia), etc.
+  tags: string[];
 }
 
 export interface DeckEntry {

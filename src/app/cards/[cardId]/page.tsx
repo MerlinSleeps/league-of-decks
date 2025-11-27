@@ -1,7 +1,5 @@
 import Image from 'next/image';
-import { getFirestore } from '@/lib/firebaseAdmin';
-import type { Card } from '@/types/card';
-
+import { getCardById } from '@/lib/cards';
 import {
   Card as ShadCard,
   CardContent,
@@ -9,39 +7,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-
 interface CardDetailPageProps {
-  params: {
+  params: Promise<{
     cardId: string;
-  };
-}
-
-async function getCard(id: string): Promise<Card | null> {
-  console.log('Attempting to fetch card with ID:', id);
-  if (!id || typeof id !== 'string') {
-    console.warn('getCard received an invalid ID. Aborting fetch.');
-    return null;
-  }
-
-  try {
-    const firestore = getFirestore();
-    const docRef = firestore.collection('cards').doc(id);
-    const docSnap = await docRef.get();
-
-    if (!docSnap.exists) {
-      return null;
-    }
-
-    return docSnap.data() as Card;
-  } catch (error) {
-    console.error('Error fetching card:', error);
-    return null;
-  }
+  }>;
 }
 
 export default async function CardDetailPage({ params }: CardDetailPageProps) {
-  const { cardId } = params;
-  const card = await getCard(cardId);
+  const { cardId } = await params;
+  const card = await getCardById(cardId);
 
   if (!card) {
     return (
@@ -60,17 +34,29 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
             <CardTitle className="text-2xl">{card.name}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Image
-              src={card.art.thumbnailURL}
-              alt={card.name}
-              width={400}
-              height={560}
-              className="w-full rounded-md mb-4"
-            />
+            <div className="relative w-full h-[560px] mb-4">
+              <Image
+                src={card.art.fullURL || card.art.thumbnailURL}
+                alt={card.name}
+                fill
+                className="object-cover rounded-md"
+              />
+            </div>
             <p className="text-lg mb-2">{card.description}</p>
-            <p className="text-xl font-bold">Power: {card.stats.power}</p>
-            <p className="text-xl font-bold">Energy: {card.stats.energy}</p>
-            <p className="text-xl font-bold">Might: {card.stats.might}</p>
+            <div className="grid grid-cols-3 gap-4 text-center mt-4">
+              <div>
+                <p className="text-xs text-gray-400 uppercase">Power</p>
+                <p className="text-xl font-bold">{card.stats.power}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 uppercase">Energy</p>
+                <p className="text-xl font-bold">{card.stats.energy}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 uppercase">Might</p>
+                <p className="text-xl font-bold">{card.stats.might}</p>
+              </div>
+            </div>
           </CardContent>
         </ShadCard>
       </div>
