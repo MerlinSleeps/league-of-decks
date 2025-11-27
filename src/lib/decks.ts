@@ -1,10 +1,8 @@
-// src/lib/decks.ts
 import { db } from '@/db';
 import { decks, deckCards, users } from '@/db/schema';
 import { eq, desc } from 'drizzle-orm';
 import { DeckEntry } from '@/types/card';
 
-// Helper to ensure user exists in Neon before creating a deck
 export async function ensureUserExists(userId: string, email: string) {
     await db
         .insert(users)
@@ -12,7 +10,7 @@ export async function ensureUserExists(userId: string, email: string) {
             id: userId,
             email: email,
         })
-        .onConflictDoNothing(); // If they exist, do nothing
+        .onConflictDoNothing();
 }
 
 export async function createDeck(
@@ -20,9 +18,7 @@ export async function createDeck(
     deckName: string,
     deckEntries: DeckEntry[]
 ) {
-    // Use a transaction to ensure both the deck and its cards are saved, or neither
     return await db.transaction(async (tx) => {
-        // 1. Create the Deck
         const [newDeck] = await tx
             .insert(decks)
             .values({
@@ -34,8 +30,6 @@ export async function createDeck(
 
         if (!newDeck) throw new Error('Failed to create deck');
 
-        // 2. Prepare card data
-        // We map your frontend DeckEntry[] to the SQL table structure
         const cardsToInsert = deckEntries.map((entry) => ({
             deckId: newDeck.id,
             cardId: entry.card.id,
@@ -51,7 +45,6 @@ export async function createDeck(
 }
 
 export async function getUserDecks(userId: string) {
-    // Simple query to get decks owned by the user
     return await db
         .select()
         .from(decks)
