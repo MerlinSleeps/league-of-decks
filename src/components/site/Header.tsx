@@ -20,7 +20,6 @@ export default function Header() {
 
   return (
     <header className="container mx-auto p-4 flex justify-between items-center border-b border-gray-700">
-      
       <div className="flex items-center gap-6">
         <Link href="/" className="text-2xl font-bold text-white">
           Runic Library

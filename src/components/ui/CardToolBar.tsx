@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Search, Filter } from 'lucide-react';
@@ -57,12 +57,26 @@ export function CardToolBar({
 }: CardToolBarProps) {
     const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
+    // 1. Local state for immediate typing feedback
+    const [localSearch, setLocalSearch] = useState(searchValue);
+
+    // 2. Sync local state if the Parent/URL changes (e.g. Browser Back Button)
+    useEffect(() => {
+        setLocalSearch(searchValue);
+    }, [searchValue]);
+
+    // 3. Handle the Enter Key
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            onSearchChange(localSearch);
+        }
+    };
+
     const handleFactionToggle = (domain: Domain) => {
         if (factionFilter.includes(domain)) {
             onFactionChange(factionFilter.filter(d => d !== domain));
         } else {
             const newFactions = [...factionFilter, domain];
-            // If all factions selected, clear filter (show all)
             if (newFactions.length === Object.keys(DOMAIN).length) {
                 onFactionChange([]);
             } else {
@@ -78,9 +92,13 @@ export function CardToolBar({
                 <div className="relative w-full md:max-w-sm">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search by card name..."
-                        value={searchValue}
-                        onChange={(e) => onSearchChange(e.target.value)}
+                        placeholder="Search card name... (Press Enter)"
+                        // Use local state here
+                        value={localSearch}
+                        onChange={(e) => setLocalSearch(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        // Optional: Trigger search on blur (clicking away) as well
+                        onBlur={() => onSearchChange(localSearch)}
                         className="pl-8 bg-gray-800 border-gray-700"
                     />
                 </div>
@@ -142,7 +160,7 @@ export function CardToolBar({
                             <select
                                 value={sortOption}
                                 onChange={(e) => onSortChange(e.target.value as SortOption)}
-                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-800 border-gray-700 text-white"
+                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm bg-gray-800 border-gray-700 text-white focus:ring-offset-0"
                             >
                                 <option value="name">Name</option>
                                 <option value="cost">Cost</option>
@@ -192,7 +210,7 @@ export function CardToolBar({
                             <select
                                 value={rarityFilter || ''}
                                 onChange={(e) => onRarityChange(e.target.value || null)}
-                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-800 border-gray-700 text-white"
+                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm bg-gray-800 border-gray-700 text-white focus:ring-offset-0"
                             >
                                 <option value="">Any Rarity</option>
                                 {RARITIES.map((r) => (
@@ -204,7 +222,7 @@ export function CardToolBar({
                                 value={cardTypeFilter || ''}
                                 onChange={(e) => onCardTypeChange(e.target.value || null)}
                                 disabled={activeFilter !== 'MainDeck'}
-                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-800 border-gray-700 text-white disabled:opacity-50"
+                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm bg-gray-800 border-gray-700 text-white disabled:opacity-50 focus:ring-offset-0"
                             >
                                 <option value="">Any Type</option>
                                 {MAIN_DECK_TYPES.map((t) => (
