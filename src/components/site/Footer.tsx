@@ -114,7 +114,7 @@ export default function Footer() {
                 {/* BOTTOM SECTION: Mandatory Riot Disclaimer */}
                 <div className="text-xs text-gray-500 text-center space-y-4 max-w-4xl mx-auto">
                     <p>
-                        Runic Library isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+                        Runic Library isn&apos;t endorsed by Riot Games and doesn&apos;t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
                     </p>
                     <p>
                         &copy; {currentYear} Stuck In Stone Media. All Rights Reserved.

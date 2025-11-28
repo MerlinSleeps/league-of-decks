@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useDeckBuilder } from '@/context/DeckBuilderContext';
 import { useAuth } from '@/context/AuthContext';
 import { useDroppable, useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import type { Card } from '@/types/card';
 import { CardImage } from '@/components/ui/CardImage';
 

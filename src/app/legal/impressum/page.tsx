@@ -22,10 +22,10 @@ export default function ImpressumPage() {
                     </p>
 
                     <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
-                        <p className="font-bold text-white mb-2">[Your Full Name]</p>
-                        <p>[Street Address] (Required for full compliance)</p>
-                        <p>[Postal Code] [City]</p>
-                        <p>[Country]</p>
+                        <p className="font-bold text-white mb-2">Merlin Möller</p>
+                        {/*<p>[Street Address]</p>
+                        <p>[Postal Code] [City]</p>*/}
+                        <p>Germany</p>
                     </div>
                 </section>
 
@@ -59,7 +59,7 @@ export default function ImpressumPage() {
                     <h2 className="text-xl font-semibold text-white">Riot Games Disclaimer</h2>
                     <div className="bg-gray-900 p-6 rounded-lg border border-gray-800 text-sm leading-relaxed text-gray-400">
                         <p>
-                            Runic Library isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games
+                            Runic Library isn&apos;t endorsed by Riot Games and doesn&apos;t reflect the views or opinions of Riot Games
                             or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all
                             associated properties are trademarks or registered trademarks of Riot Games, Inc.
                         </p>
