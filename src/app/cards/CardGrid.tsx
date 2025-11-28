@@ -95,6 +95,10 @@ export default function CardGrid({ allCards }: CardGridProps) {
     return cards;
   }, [allCards, searchText, activeFilter, sortOption, sortDirection, factionFilter, rarityFilter, cardTypeFilter]);
 
+  const gridColsClass = activeFilter === 'Battlefield'
+    ? 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4'
+    : 'grid-cols-1 md:grid-cols-3 lg:grid-cols-5';
+
   return (
     <div>
       <CardToolBar
@@ -114,22 +118,27 @@ export default function CardGrid({ allCards }: CardGridProps) {
         onCardTypeChange={setCardTypeFilter}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {filteredCards.map((card) => (
-          <Link href={`/cards/${card.id}`} key={card.id}>
-            <ShadCard className="flex flex-col justify-between overflow-hidden h-full hover:shadow-lg hover:shadow-cyan-500/30 transition-shadow border-0 bg-transparent">
-              <CardContent className="p-0">
-                <div className="aspect-[3/4] w-full relative rounded-md overflow-hidden">
-                  <CardImage
-                    key={card.art?.thumbnailURL}
-                    src={card.art?.thumbnailURL}
-                    alt={""}
-                  />
-                </div>
-              </CardContent>
-            </ShadCard>
-          </Link>
-        ))}
+      <div className={`grid ${gridColsClass} gap-4`}>
+        {filteredCards.map((card) => {
+          const isBattlefield = card.type.includes(CARD_TYPE.Battlefield);
+          const aspectRatioClass = isBattlefield ? 'aspect-[4/3]' : 'aspect-[3/4]';
+
+          return (
+            <Link href={`/cards/${card.id}`} key={card.id}>
+              <ShadCard className="flex flex-col justify-between overflow-hidden h-full hover:shadow-lg hover:shadow-cyan-500/30 transition-shadow border-0 bg-transparent">
+                <CardContent className="p-0">
+                  <div className={`${aspectRatioClass} w-full relative rounded-md overflow-hidden`}>
+                    <CardImage
+                      key={card.art?.thumbnailURL}
+                      src={card.art?.thumbnailURL}
+                      alt={""}
+                    />
+                  </div>
+                </CardContent>
+              </ShadCard>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

@@ -54,6 +54,9 @@ function DraggableCard({ card }: { card: Card }) {
     else if (battlefieldDeck.some(e => e.card.id === card.id)) removeFromBattlefieldDeck(card.id);
   };
 
+  const isBattlefield = card.type.includes(CARD_TYPE.Battlefield);
+  const aspectRatioClass = isBattlefield ? 'aspect-[4/3]' : 'aspect-[3/4]';
+
   return (
     <div ref={setNodeRef} className="h-full group relative">
       <ShadCard className="flex flex-col justify-between overflow-hidden h-full border-0 bg-transparent">
@@ -61,7 +64,7 @@ function DraggableCard({ card }: { card: Card }) {
           <div
             {...listeners}
             {...attributes}
-            className="aspect-[3/4] w-full relative rounded-md overflow-hidden cursor-grab active:cursor-grabbing group-hover:ring-2 group-hover:ring-purple-500 transition-all"
+            className={`${aspectRatioClass} w-full relative rounded-md overflow-hidden cursor-grab active:cursor-grabbing group-hover:ring-2 group-hover:ring-purple-500 transition-all`}
           >
             <CardImage
               key={card.art?.thumbnailURL}
@@ -188,6 +191,10 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
     return cards;
   }, [allCards, searchText, activeFilter, sortOption, sortDirection, factionFilter, rarityFilter, cardTypeFilter]);
 
+  const gridColsClass = activeFilter === 'Battlefield'
+    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2'
+    : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+
   return (
     <div ref={setNodeRef} className="min-h-[500px]">
       <CardToolBar
@@ -207,7 +214,7 @@ export default function BuilderCardGrid({ allCards }: CardGridProps) {
         onCardTypeChange={setCardTypeFilter}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={`grid ${gridColsClass} gap-4`}>
         {filteredCards.map((card) => (
           <DraggableCard key={card.id} card={card} />
         ))}
