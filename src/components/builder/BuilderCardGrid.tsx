@@ -61,7 +61,7 @@ function DraggableCard({ card }: { card: Card }) {
           <div
             {...listeners}
             {...attributes}
-            className="aspect-[3/4] w-full relative rounded-md overflow-hidden cursor-grab active:cursor-grabbing hover:ring-2 hover:ring-purple-500 transition-all"
+            className="aspect-[3/4] w-full relative rounded-md overflow-hidden cursor-grab active:cursor-grabbing group-hover:ring-2 group-hover:ring-purple-500 transition-all"
           >
             <CardImage
               key={card.art?.thumbnailURL}
@@ -108,7 +108,7 @@ function DraggableCard({ card }: { card: Card }) {
 export default function BuilderCardGrid({ allCards }: CardGridProps) {
   // Search & Basic Filter State
   const [searchText, setSearchText] = useState('');
-  const [activeFilter, setActiveFilter] = useState<FilterType>('MainDeck');
+  const [activeFilter, setActiveFilter] = useState<FilterType>('Legend');
 
   // Advanced Filter State
   const [sortOption, setSortOption] = useState<SortOption>('name');

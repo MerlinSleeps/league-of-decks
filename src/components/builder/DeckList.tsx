@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useDroppable, useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import type { Card } from '@/types/card';
+import { CardImage } from '@/components/ui/CardImage';
 
 import { Button } from '@/components/ui/button';
 import { X, AlertCircle, CheckCircle2 } from 'lucide-react';
@@ -58,6 +59,7 @@ export default function DeckList() {
 
   const { user } = useAuth();
   const [deckName, setDeckName] = useState('');
+  const [hoveredCard, setHoveredCard] = useState<Card | null>(null);
 
   const { setNodeRef } = useDroppable({
     id: 'deck-list',
@@ -116,7 +118,27 @@ export default function DeckList() {
   };
 
   return (
-    <aside ref={setNodeRef} className="sticky top-24 bg-gray-900 p-4 rounded-lg border border-gray-700 h-[calc(100vh-8rem)] flex flex-col">
+    <aside ref={setNodeRef} className="sticky top-24 bg-gray-900 p-4 rounded-lg border border-gray-700 h-[calc(100vh-8rem)] flex flex-col relative">
+      {/* Hover Preview */}
+      {hoveredCard && (
+        <div className="fixed right-[24rem] top-32 z-50 pointer-events-none w-[240px] animate-in fade-in zoom-in-95 duration-150">
+          <div className="rounded-xl overflow-hidden border-2 border-purple-500/50 bg-gray-900 shadow-2xl shadow-purple-900/20">
+            <div className="aspect-[3/4] w-full relative">
+              <CardImage src={hoveredCard.art?.thumbnailURL} alt={hoveredCard.name} />
+            </div>
+            <div className="p-3 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800">
+              <p className="font-bold text-white text-lg leading-tight mb-1">{hoveredCard.name}</p>
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <span className="px-1.5 py-0.5 rounded bg-gray-800 border border-gray-700">{hoveredCard.type}</span>
+                {hoveredCard.stats?.cost !== undefined && (
+                  <span className="px-1.5 py-0.5 rounded bg-blue-900/30 border border-blue-800 text-blue-200">Cost: {hoveredCard.stats.cost}</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Your Deck</h2>
         <div className="flex items-center gap-2">
@@ -140,9 +162,13 @@ export default function DeckList() {
             <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Legend</h3>
             {championLegend ? (
               <DraggableDeckItem id={`legend-${championLegend.id}`} deckType="legend" card={championLegend}>
-                <div className="bg-purple-900/30 border border-purple-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing">
-                  <Image src={championLegend.art.thumbnailURL} alt={championLegend.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
-                  <div>
+                <div
+                  className="bg-purple-900/30 border border-purple-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing hover:bg-purple-900/40 transition-colors"
+                  onMouseEnter={() => setHoveredCard(championLegend)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/*TODO: Create Gradient*/}
+                  {/*<Image src={championLegend.art.thumbnailURL} alt={championLegend.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />*/}                  <div>
                     <p className="font-bold text-purple-200">{championLegend.name}</p>
                     <p className="text-xs text-purple-300">{championLegend.faction}</p>
                   </div>
@@ -160,8 +186,12 @@ export default function DeckList() {
             <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Champion</h3>
             {championCard ? (
               <DraggableDeckItem id={`champion-${championCard.id}`} deckType="main" card={championCard}>
-                <div className="bg-yellow-900/30 border border-yellow-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing">
-                  <Image src={championCard.art.thumbnailURL} alt={championCard.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />
+                <div
+                  className="bg-yellow-900/30 border border-yellow-500/50 p-3 rounded flex items-center gap-3 cursor-grab active:cursor-grabbing hover:bg-yellow-900/40 transition-colors"
+                  onMouseEnter={() => setHoveredCard(championCard)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/*<Image src={championCard.art.thumbnailURL} alt={championCard.name} width={48} height={48} className="w-12 h-12 rounded object-cover" />*/}
                   <div>
                     <p className="font-bold text-yellow-200">{championCard.name}</p>
                     <p className="text-xs text-yellow-300">{championCard.type}</p>
@@ -193,7 +223,11 @@ export default function DeckList() {
             <div className="space-y-1">
               {displayMainDeck.map(({ card, count }) => (
                 <DraggableDeckItem key={card.id} id={`main-${card.id}`} deckType="main" card={card}>
-                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                  <div
+                    className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing"
+                    onMouseEnter={() => setHoveredCard(card)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
                     <div className="flex items-center gap-2 overflow-hidden">
                       <div className="w-6 h-6 bg-gray-900 rounded flex items-center justify-center text-xs font-mono text-gray-400">{card.stats.cost}</div>
                       <span className="truncate">{card.name}</span>
@@ -235,7 +269,11 @@ export default function DeckList() {
             <div className="space-y-1">
               {runeDeck.map(({ card, count }) => (
                 <DraggableDeckItem key={card.id} id={`rune-${card.id}`} deckType="rune" card={card}>
-                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                  <div
+                    className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing"
+                    onMouseEnter={() => setHoveredCard(card)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
                     <span className="truncate text-blue-200">{card.name}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-400">x{count}</span>
@@ -274,7 +312,11 @@ export default function DeckList() {
             <div className="space-y-1">
               {battlefieldDeck.map(({ card }) => (
                 <DraggableDeckItem key={card.id} id={`battlefield-${card.id}`} deckType="battlefield" card={card}>
-                  <div className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing">
+                  <div
+                    className="group flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-2 rounded text-sm transition-colors cursor-grab active:cursor-grabbing"
+                    onMouseEnter={() => setHoveredCard(card)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
                     <span className="truncate text-orange-200">{card.name}</span>
                     <div className="flex items-center gap-2">
                       <button

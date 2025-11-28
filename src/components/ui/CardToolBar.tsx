@@ -94,6 +94,13 @@ export function CardToolBar({
                         Legends
                     </Button>
                     <Button
+                        variant={activeFilter === 'MainDeck' ? 'default' : 'outline'}
+                        onClick={() => onFilterChange('MainDeck')}
+                        className="transition-all"
+                    >
+                        Main Deck
+                    </Button>
+                    <Button
                         variant={activeFilter === 'Battlefield' ? 'default' : 'outline'}
                         onClick={() => onFilterChange('Battlefield')}
                         className="transition-all"
@@ -106,13 +113,6 @@ export function CardToolBar({
                         className="transition-all"
                     >
                         Runes
-                    </Button>
-                    <Button
-                        variant={activeFilter === 'MainDeck' ? 'default' : 'outline'}
-                        onClick={() => onFilterChange('MainDeck')}
-                        className="transition-all"
-                    >
-                        Main Deck
                     </Button>
                 </div>
             </div>
