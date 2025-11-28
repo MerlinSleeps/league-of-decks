@@ -22,7 +22,8 @@ export default function DeckBuilderDragDropWrapper({
     } = useDeckBuilder();
 
     const [activeCard, setActiveCard] = useState<Card | null>(null);
-    const [activeSource, setActiveSource] = useState<string | null>(null);
+    //TODO: Define activeSource type
+    // const [activeSource, setActiveSource] = useState<string | null>(null);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {

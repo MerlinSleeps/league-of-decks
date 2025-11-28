@@ -2,15 +2,13 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 interface CardImageProps {
     src?: string;
     alt: string;
-    className?: string;
 }
 
-export function CardImage({ src, alt, className }: CardImageProps) {
+export function CardImage({ src, alt }: CardImageProps) {
     const [error, setError] = useState(false);
 
     const fallbackImage = "/assets/card-back.png";

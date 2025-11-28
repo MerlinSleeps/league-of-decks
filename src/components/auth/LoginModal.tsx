@@ -34,8 +34,8 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
     try {
       await signInWithPopup(auth, provider);
       setIsOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
     }
   };
 
@@ -44,8 +44,8 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setIsOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
     }
   };
 
@@ -54,8 +54,8 @@ export function LoginModal({ children }: { children: React.ReactNode }) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setIsOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
     }
   };
 

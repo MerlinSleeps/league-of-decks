@@ -3,7 +3,6 @@
 import type { Card, Domain } from '@/types/card';
 import type { DeckEntry } from '@/types/card';
 import { CARD_TYPE } from '@/constants/card-type';
-import { DOMAIN } from '@/constants/domains';
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 // --- DECK BUILDING RULES (from our conversation) ---
@@ -225,7 +224,6 @@ export const DeckBuilderProvider = ({
       if (!isCardInDomain(entry.card, state.domainIdentity)) {
         state.mainDeckErrors.push(`${entry.card.name}: Not in your Domain Identity.`);
       }
-      const type = getCardTypes(entry.card);
       if (isSignature(entry.card)) {
         const tag = getChampionTag(entry.card);
         if (tag !== state.championTag) {
