@@ -59,6 +59,30 @@ export function CardToolBar({
 
     // 1. Local state for immediate typing feedback
     const [localSearch, setLocalSearch] = useState(searchValue);
+    const [suggestions, setSuggestions] = useState<any[]>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (localSearch.length < 2) {
+                setSuggestions([])
+                return
+            }
+
+            try {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(localSearch)}`)
+                if (res.ok) {
+                    const data = await res.json()
+                    setSuggestions(data)
+                }
+            } catch (error) {
+                console.error("Failed to fetch suggestions", error)
+            }
+        }
+
+        const timeoutId = setTimeout(fetchSuggestions, 300)
+        return () => clearTimeout(timeoutId)
+    }, [localSearch])
 
     // 2. Sync local state if the Parent/URL changes (e.g. Browser Back Button)
     useEffect(() => {
@@ -69,6 +93,7 @@ export function CardToolBar({
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             onSearchChange(localSearch);
+            setShowSuggestions(false);
         }
     };
 
@@ -95,12 +120,40 @@ export function CardToolBar({
                         placeholder="Search card name... (Press Enter)"
                         // Use local state here
                         value={localSearch}
-                        onChange={(e) => setLocalSearch(e.target.value)}
+                        onChange={(e) => {
+                            setLocalSearch(e.target.value)
+                            setShowSuggestions(true)
+                        }}
                         onKeyDown={handleKeyDown}
                         // Optional: Trigger search on blur (clicking away) as well
-                        onBlur={() => onSearchChange(localSearch)}
+                        onBlur={() => {
+                            onSearchChange(localSearch)
+                            setTimeout(() => setShowSuggestions(false), 200)
+                        }}
+                        onFocus={() => setShowSuggestions(true)}
                         className="pl-8 bg-gray-800 border-gray-700"
                     />
+                    {/* Typeahead Suggestions */}
+                    {showSuggestions && suggestions.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-gray-900 border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
+                            {suggestions.map((card) => (
+                                <div
+                                    key={card.id}
+                                    className="flex items-center px-4 py-3 hover:bg-gray-800 transition-colors cursor-pointer"
+                                    onClick={() => {
+                                        setLocalSearch(card.name)
+                                        onSearchChange(card.name)
+                                        setShowSuggestions(false)
+                                    }}
+                                >
+                                    {card.image && (
+                                        <img src={card.image} alt={card.name} className="w-8 h-8 rounded object-cover mr-3" />
+                                    )}
+                                    <span className="text-gray-200">{card.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-wrap gap-2">

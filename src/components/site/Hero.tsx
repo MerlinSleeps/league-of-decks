@@ -11,11 +11,36 @@ import { Input } from "@/components/ui/input"
 export function Hero() {
     const router = useRouter()
     const [query, setQuery] = React.useState("")
+    const [suggestions, setSuggestions] = React.useState<any[]>([])
+    const [showSuggestions, setShowSuggestions] = React.useState(false)
+
+    React.useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (query.length < 2) {
+                setSuggestions([])
+                return
+            }
+
+            try {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                if (res.ok) {
+                    const data = await res.json()
+                    setSuggestions(data)
+                }
+            } catch (error) {
+                console.error("Failed to fetch suggestions", error)
+            }
+        }
+
+        const timeoutId = setTimeout(fetchSuggestions, 300)
+        return () => clearTimeout(timeoutId)
+    }, [query])
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
         if (query.trim()) {
             router.push(`/cards?name=${encodeURIComponent(query)}`)
+            setShowSuggestions(false)
         }
     }
 
@@ -56,18 +81,42 @@ export function Hero() {
                             type="text"
                             placeholder="Search for a champion or card..."
                             value={query}
-                            onChange={(e) => setQuery(e.target.value)}
+                            onChange={(e) => {
+                                setQuery(e.target.value)
+                                setShowSuggestions(true)
+                            }}
+                            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                            onFocus={() => setShowSuggestions(true)}
                             className="pr-24 h-12 bg-gray-950/80 border-gray-800 backdrop-blur-xl text-lg shadow-xl"
                         />
                         <Button
                             type="submit"
                             size="sm"
-                            className="absolute right-1 top-1 bottom-1 bg-cyan-600 hover:bg-cyan-700 text-white"
+                            className="absolute right-1 top-2 bottom-1 bg-purple-700 hover:bg-purple-700 text-white"
                         >
                             <Search className="mr-2 h-4 w-4" />
                             Search
                         </Button>
                     </form>
+
+                    {/* Typeahead Suggestions */}
+                    {showSuggestions && suggestions.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-gray-900 border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
+                            {suggestions.map((card) => (
+                                <Link
+                                    key={card.id}
+                                    href={`/cards/${card.id}`}
+                                    className="flex items-center px-4 py-3 hover:bg-gray-800 transition-colors"
+                                    onClick={() => setShowSuggestions(false)}
+                                >
+                                    {card.image && (
+                                        <img src={card.image} alt={card.name} className="w-8 h-8 rounded object-cover mr-3" />
+                                    )}
+                                    <span className="text-gray-200">{card.name}</span>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Action Buttons */}
