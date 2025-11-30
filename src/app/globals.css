@@ -116,7 +116,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@font-face {
+  font-family: 'Arcane';
+  src: url('/font/arcaneNine-modded.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
