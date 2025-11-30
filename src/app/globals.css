@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: 'Arcane';
+  src: url('/fonts/arcaneNine-modded.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-arcane: Arcane, sans-serif;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -120,12 +132,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-@font-face {
-  font-family: 'Arcane';
-  src: url('/font/arcaneNine-modded.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
 }
