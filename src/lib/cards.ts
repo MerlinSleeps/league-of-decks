@@ -3,22 +3,7 @@ import { cards } from '@/db/schema';
 import { eq, and, gte, lte, ilike, or, SQL, sql } from 'drizzle-orm';
 import type { Card } from '@/types/card';
 import { CARD_TYPE } from '@/constants/card-type';
-
-export interface CardFilters {
-    name?: string;
-    tags?: string[];
-    factions?: string[];
-    rarity?: string;
-    types?: string[];
-    category?: 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune' | 'All';
-    minCost?: number;
-    maxCost?: number;
-    minMight?: number;
-    maxMight?: number;
-    sort?: 'name' | 'cost' | 'might';
-    order?: 'asc' | 'desc';
-    tags?: string[];
-}
+import { CardFilters } from '@/lib/filter-utils';
 
 export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
     const conditions: SQL[] = [];

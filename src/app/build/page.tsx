@@ -7,7 +7,7 @@ import BuilderCardGrid from '@/components/builder/BuilderCardGrid';
 export const revalidate = 3600;
 
 export default async function BuildPage() {
-  const allCards = await getAllCards();
+  const initialCards = await getAllCards({ category: 'Legend' });
 
   return (
     <DeckBuilderProvider>
@@ -17,7 +17,7 @@ export default async function BuildPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <BuilderCardGrid allCards={allCards} />
+              <BuilderCardGrid initialCards={initialCards} />
             </div>
 
             <div className="lg:col-span-1">

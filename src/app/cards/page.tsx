@@ -1,22 +1,12 @@
-import { getAllCards, CardFilters } from '@/lib/cards';
+import { getAllCards } from '@/lib/cards';
 import CardGrid from './CardGrid';
+import { parseSearchQuery } from '@/lib/utils';
+import { CardFilters } from '@/lib/filter-utils';
 
 export const revalidate = 0; // Disable cache to see live changes
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-function parseSearchQuery(input: string) {
-  const tagMatches = input.match(/"([^"]+)"/g);
-
-  const tags = tagMatches
-    ? tagMatches.map(t => t.replace(/"/g, '').trim())
-    : [];
-
-  const name = input.replace(/"([^"]+)"/g, '').replace(/\s+/g, ' ').trim();
-
-  return { name, tags };
 }
 
 export default async function CardsPage(props: PageProps) {
@@ -37,7 +27,7 @@ export default async function CardsPage(props: PageProps) {
     category: (searchParams.category as any) || 'MainDeck',
     factions: parseArray(searchParams.factions),
     rarity: searchParams.rarity as string,
-    types: parseArray(searchParams.types),
+    type: searchParams.type as string,
     sort: searchParams.sort as any,
     order: searchParams.order as any,
   };
