@@ -7,6 +7,7 @@ import { ChevronDown, ChevronUp, Search, Filter } from 'lucide-react';
 import { DOMAIN, Domain } from '@/constants/domains';
 import { CARD_TYPE } from '@/constants/card-type';
 import type { Card } from '@/types/card';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export type FilterType = 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune';
 export type SortOption = 'cost' | 'might' | 'name';
@@ -60,18 +61,21 @@ export function CardToolBar({
 
     // 1. Local state for immediate typing feedback
     const [localSearch, setLocalSearch] = useState(searchValue);
+
+    const debouncedSearch = useDebounce(localSearch, 300);
+
     const [suggestions, setSuggestions] = useState<Card[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
 
     useEffect(() => {
         const fetchSuggestions = async () => {
-            if (localSearch.length < 2) {
+            if (debouncedSearch.length < 2) {
                 setSuggestions([])
                 return
             }
 
             try {
-                const res = await fetch(`/api/search?q=${encodeURIComponent(localSearch)}`)
+                const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedSearch)}`)
                 if (res.ok) {
                     const data = await res.json()
                     setSuggestions(data)
@@ -83,7 +87,7 @@ export function CardToolBar({
 
         const timeoutId = setTimeout(fetchSuggestions, 300)
         return () => clearTimeout(timeoutId)
-    }, [localSearch])
+    }, [debouncedSearch])
 
     // 2. Sync local state if the Parent/URL changes (e.g. Browser Back Button)
     useEffect(() => {
@@ -93,7 +97,7 @@ export function CardToolBar({
     // 3. Handle the Enter Key
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            onSearchChange(localSearch);
+            onSearchChange(debouncedSearch);
             setShowSuggestions(false);
         }
     };

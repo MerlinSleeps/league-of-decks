@@ -15,6 +15,7 @@ import { CARD_TYPE } from '@/constants/card-type';
 import { CardToolBar, FilterType, SortOption, SortDirection } from '@/components/ui/CardToolBar';
 import { Domain } from '@/constants/domains';
 import { toURLSearchParams, CardFilters, parseSearchQuery } from '@/lib/filter-utils';
+import { useDebounce } from '@/hooks/useDebounce';
 
 function DraggableCard({ card }: { card: Card }) {
   const { attributes, listeners, setNodeRef } = useDraggable({
@@ -108,11 +109,7 @@ export default function BuilderCardGrid({ initialCards = [] }: BuilderCardGridPr
   const [cards, setCards] = useState<Card[]>(initialCards);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [debouncedSearch, setDebouncedSearch] = useState(searchText);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(searchText), 300);
-    return () => clearTimeout(timer);
-  }, [searchText]);
+  const debouncedSearch = useDebounce(searchText, 300);
 
   useEffect(() => {
     const fetchCards = async () => {

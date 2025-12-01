@@ -5,6 +5,7 @@ import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import type { Card } from '@/types/card';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface CardSearchProps {
     value: string
@@ -26,15 +27,17 @@ export function CardSearch({
     const [suggestions, setSuggestions] = React.useState<Card[]>([])
     const [showSuggestions, setShowSuggestions] = React.useState(false)
 
+    const debouncedValue = useDebounce(value, 300)
+
     React.useEffect(() => {
         const fetchSuggestions = async () => {
-            if (value.length < 2) {
+            if (debouncedValue.length < 2) {
                 setSuggestions([])
                 return
             }
 
             try {
-                const res = await fetch(`/api/search?q=${encodeURIComponent(value)}`)
+                const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedValue)}`)
                 if (res.ok) {
                     const data = await res.json()
                     setSuggestions(data)
@@ -46,11 +49,11 @@ export function CardSearch({
 
         const timeoutId = setTimeout(fetchSuggestions, 300)
         return () => clearTimeout(timeoutId)
-    }, [value])
+    }, [debouncedValue])
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            onSearch(value)
+            onSearch(debouncedValue)
             setShowSuggestions(false)
         }
     }
