@@ -43,7 +43,7 @@ export function Hero() {
                         onChange={setQuery}
                         onSearch={handleSearch}
                         variant="hero"
-                        placeholder="Search by name or tag (e.g. 'Sett')"
+                        placeholder="Search by name or tag (e.g. &quot;Sett&quot; )"
                         className="shadow-2xl"
                     />
                 </div>
