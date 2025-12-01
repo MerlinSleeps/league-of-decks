@@ -111,6 +111,8 @@ export default function BuilderCardGrid({ initialCards = [] }: BuilderCardGridPr
 
   const debouncedSearch = useDebounce(searchText, 300);
 
+
+
   useEffect(() => {
     const fetchCards = async () => {
       setIsLoading(true);

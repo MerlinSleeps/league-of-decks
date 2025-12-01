@@ -181,7 +181,13 @@ export default function DeckList() {
 
           {/* CHAMPION SECTION */}
           <div ref={setChampionRef}>
-            <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Champion</h3>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Champion</h3>
+              {!championLegend && (
+                <span className="text-xs text-red-400">Select Legend first</span>
+              )}
+            </div>
+
             {championCard ? (
               <DraggableDeckItem id={`champion-${championCard.id}`} deckType="main" card={championCard}>
                 <div
