@@ -4,6 +4,7 @@ import * as React from "react"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import type { Card } from '@/types/card';
 
 interface CardSearchProps {
     value: string
@@ -22,7 +23,7 @@ export function CardSearch({
     placeholder = "Search...",
     className,
 }: CardSearchProps) {
-    const [suggestions, setSuggestions] = React.useState<any[]>([])
+    const [suggestions, setSuggestions] = React.useState<Card[]>([])
     const [showSuggestions, setShowSuggestions] = React.useState(false)
 
     React.useEffect(() => {
@@ -84,9 +85,6 @@ export function CardSearch({
                                 setShowSuggestions(false)
                             }}
                         >
-                            {card.image && (
-                                <img src={card.image} alt={card.name} className="w-8 h-8 rounded object-cover mr-3" />
-                            )}
                             <span className="text-gray-200">{card.name}</span>
                         </div>
                     ))}

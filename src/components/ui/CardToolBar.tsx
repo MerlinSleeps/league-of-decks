@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Search, Filter } from 'lucide-react';
 import { DOMAIN, Domain } from '@/constants/domains';
 import { CARD_TYPE } from '@/constants/card-type';
+import type { Card } from '@/types/card';
 
 export type FilterType = 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune';
 export type SortOption = 'cost' | 'might' | 'name';
@@ -59,7 +60,7 @@ export function CardToolBar({
 
     // 1. Local state for immediate typing feedback
     const [localSearch, setLocalSearch] = useState(searchValue);
-    const [suggestions, setSuggestions] = useState<any[]>([]);
+    const [suggestions, setSuggestions] = useState<Card[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
 
     useEffect(() => {
@@ -146,9 +147,6 @@ export function CardToolBar({
                                         setShowSuggestions(false)
                                     }}
                                 >
-                                    {card.image && (
-                                        <img src={card.image} alt={card.name} className="w-8 h-8 rounded object-cover mr-3" />
-                                    )}
                                     <span className="text-gray-200">{card.name}</span>
                                 </div>
                             ))}

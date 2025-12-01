@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { cards } from '@/db/schema';
-import { eq, and, gte, lte, ilike, or, SQL, sql } from 'drizzle-orm';
+import { eq, and, ilike, or, SQL, sql, Column, asc, desc } from 'drizzle-orm';
 import type { Card } from '@/types/card';
 import { CARD_TYPE } from '@/constants/card-type';
 import { CardFilters } from '@/lib/filter-utils';
@@ -58,7 +58,7 @@ export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
     }
 
     // 6. Sorting
-    let orderByClause: any = cards.name; // Default
+    let orderByClause: SQL | Column = cards.name; // Default
     if (filters.sort === 'cost') orderByClause = cards.cost;
     if (filters.sort === 'might') orderByClause = cards.might;
 
@@ -70,11 +70,9 @@ export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
 
     // Apply Sort Direction
     if (filters.order === 'desc') {
-        // @ts-ignore - Drizzle dynamic sort handling
-        await query.orderBy(sql`${orderByClause} DESC`);
+        await query.orderBy(desc(orderByClause));
     } else {
-        // @ts-ignore
-        await query.orderBy(orderByClause);
+        await query.orderBy(asc(orderByClause));
     }
 
     const result = await query;

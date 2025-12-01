@@ -31,10 +31,6 @@ export default function CardGrid({ initialCards }: CardGridProps) {
   const [rarityFilter, setRarityFilter] = useState<string | null>(searchParams.get('rarity'));
   const [cardTypeFilter, setCardTypeFilter] = useState<string | null>(searchParams.getAll('types')[0] || null);
 
-  // Debounce search text to avoid URL updates on every keystroke
-  // Note: If you don't have useDebounce, just use useEffect with setTimeout
-  const [debouncedSearch] = useState(searchText);
-
   // Effect: Sync State -> URL
   useEffect(() => {
     const params = new URLSearchParams();

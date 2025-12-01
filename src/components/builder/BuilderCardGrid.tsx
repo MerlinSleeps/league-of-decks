@@ -123,7 +123,7 @@ export default function BuilderCardGrid({ initialCards = [] }: BuilderCardGridPr
         const filters: CardFilters = {
           name: name || undefined,
           tags: tags.length > 0 ? tags : undefined,
-          category: activeFilter as any,
+          category: activeFilter,
           sort: sortOption,
           order: sortDirection,
           factions: factionFilter,

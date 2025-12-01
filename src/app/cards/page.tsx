@@ -24,12 +24,12 @@ export default async function CardsPage(props: PageProps) {
   const filters: CardFilters = {
     name: name,
     tags: tags,
-    category: (searchParams.category as any) || 'MainDeck',
+    category: (searchParams.category as CardFilters['category']) || 'MainDeck',
     factions: parseArray(searchParams.factions),
     rarity: searchParams.rarity as string,
     type: searchParams.type as string,
-    sort: searchParams.sort as any,
-    order: searchParams.order as any,
+    sort: searchParams.sort as CardFilters['sort'],
+    order: searchParams.order as CardFilters['order'],
   };
 
   const allCards = await getAllCards(filters);

@@ -23,12 +23,14 @@ export async function GET(request: NextRequest) {
             .limit(5);
 
         // Extract image URL from data jsonb
-        const formattedResults = results.map(card => ({
-            id: card.id,
-            name: card.name,
-            // @ts-ignore
-            image: card.image?.image || ''
-        }));
+        const formattedResults = results.map(card => {
+            const cardData = card.image as { image?: string };
+            return {
+                id: card.id,
+                name: card.name,
+                image: cardData?.image || ''
+            };
+        });
 
         return NextResponse.json(formattedResults);
     } catch (error) {

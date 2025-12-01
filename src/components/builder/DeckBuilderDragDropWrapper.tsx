@@ -22,7 +22,6 @@ export default function DeckBuilderDragDropWrapper({
     } = useDeckBuilder();
 
     const [activeCard, setActiveCard] = useState<Card | null>(null);
-    const [activeSource, setActiveSource] = useState<string | null>(null);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -35,17 +34,15 @@ export default function DeckBuilderDragDropWrapper({
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;
         const card = active.data.current?.card as Card;
-        const source = active.data.current?.source as string;
         if (card) {
             setActiveCard(card);
-            setActiveSource(source);
         }
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         setActiveCard(null);
-        setActiveSource(null);
+
 
         // If dropped outside of any droppable area
         if (!over) {
