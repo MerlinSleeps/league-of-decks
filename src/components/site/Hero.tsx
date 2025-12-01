@@ -43,7 +43,7 @@ export function Hero() {
                         onChange={setQuery}
                         onSearch={handleSearch}
                         variant="hero"
-                        placeholder="Search for cards, champions, or artists..."
+                        placeholder="Search by name or tag (e.g. 'Sett')"
                         className="shadow-2xl"
                     />
                 </div>

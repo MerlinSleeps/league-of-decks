@@ -27,7 +27,7 @@ export default function Header() {
 
         <nav className="flex gap-4">
           <Link href="/cards" className="text-gray-300 hover:text-white">
-            Gallery
+            Cards
           </Link>
           <Link href="/build" className="text-gray-300 hover:text-white">
             Builder

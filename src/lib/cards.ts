@@ -6,9 +6,10 @@ import { CARD_TYPE } from '@/constants/card-type';
 
 export interface CardFilters {
     name?: string;
-    factions?: string[]; // Array of factions (e.g., ['Fury', 'Spirit'])
+    tags?: string[];
+    factions?: string[];
     rarity?: string;
-    types?: string[];    // Array of types (e.g., ['Unit', 'Spell'])
+    types?: string[];
     category?: 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune' | 'All';
     minCost?: number;
     maxCost?: number;
@@ -16,6 +17,7 @@ export interface CardFilters {
     maxMight?: number;
     sort?: 'name' | 'cost' | 'might';
     order?: 'asc' | 'desc';
+    tags?: string[];
 }
 
 export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
@@ -28,7 +30,6 @@ export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
 
     // 2. Factions (OR logic: Card matches ANY of the selected factions)
     if (filters.factions && filters.factions.length > 0) {
-        // We use ILIKE because your factions are stored as text strings
         const factionConditions = filters.factions.map(f =>
             ilike(cards.faction, `%${f}%`)
         );
@@ -64,6 +65,11 @@ export async function getAllCards(filters: CardFilters = {}): Promise<Card[]> {
                 )!);
                 break;
         }
+    }
+
+    // 5. Tags
+    if (filters.tags) {
+        conditions.push(sql`${cards.data}->'tags' @> ${JSON.stringify(filters.tags)}`);
     }
 
     // 6. Sorting

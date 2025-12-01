@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { cards } from '@/db/schema';
-import { ilike, or } from 'drizzle-orm';
+import { ilike } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
