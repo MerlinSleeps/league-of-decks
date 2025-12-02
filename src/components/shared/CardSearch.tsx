@@ -16,6 +16,15 @@ interface CardSearchProps {
     className?: string
 }
 
+function deduplicateCards(cards: Card[]) {
+    const seen = new Set();
+    return cards.filter(card => {
+        const duplicate = seen.has(card.name);
+        seen.add(card.name);
+        return !duplicate;
+    });
+}
+
 export function CardSearch({
     value,
     onChange,
@@ -39,8 +48,12 @@ export function CardSearch({
             try {
                 const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedValue)}`)
                 if (res.ok) {
-                    const data = await res.json()
-                    setSuggestions(data)
+                    const data: Card[] = await res.json()
+                    const cleanData = deduplicateCards(
+                        data.filter(c => c.rarity !== 'Showcase')
+                    );
+
+                    setSuggestions(cleanData.slice(0, 5))
                 }
             } catch (error) {
                 console.error("Failed to fetch suggestions", error)

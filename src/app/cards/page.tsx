@@ -24,7 +24,7 @@ export default async function CardsPage(props: PageProps) {
   const filters: CardFilters = {
     name: name,
     tags: tags,
-    category: (searchParams.category as CardFilters['category']) || 'MainDeck',
+    category: (searchParams.category as CardFilters['category']) || 'All',
     factions: parseArray(searchParams.factions),
     rarity: searchParams.rarity as string,
     type: searchParams.type as string,

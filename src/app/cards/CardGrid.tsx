@@ -21,7 +21,7 @@ export default function CardGrid({ initialCards }: CardGridProps) {
 
   // Initialize state from URL params
   const [searchText, setSearchText] = useState(searchParams.get('name') || '');
-  const [activeFilter, setActiveFilter] = useState<FilterType>((searchParams.get('category') as FilterType) || 'MainDeck');
+  const [activeFilter, setActiveFilter] = useState<FilterType>((searchParams.get('category') as FilterType) || 'All');
   const [sortOption, setSortOption] = useState<SortOption>((searchParams.get('sort') as SortOption) || 'name');
   const [sortDirection, setSortDirection] = useState<SortDirection>((searchParams.get('order') as SortDirection) || 'asc');
 

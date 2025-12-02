@@ -9,7 +9,7 @@ import { CARD_TYPE } from '@/constants/card-type';
 import type { Card } from '@/types/card';
 import { useDebounce } from '@/hooks/useDebounce';
 
-export type FilterType = 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune';
+export type FilterType = 'All' | 'Legend' | 'Battlefield' | 'MainDeck' | 'Rune';
 export type SortOption = 'cost' | 'might' | 'name';
 export type SortDirection = 'asc' | 'desc';
 
@@ -159,6 +159,13 @@ export function CardToolBar({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
+                    <Button
+                        variant={activeFilter === 'All' ? 'default' : 'outline'}
+                        onClick={() => onFilterChange('All')}
+                        className="transition-all"
+                    >
+                        All Cards
+                    </Button>
                     <Button
                         variant={activeFilter === 'Legend' ? 'default' : 'outline'}
                         onClick={() => onFilterChange('Legend')}
